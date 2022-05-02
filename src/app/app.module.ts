@@ -1,13 +1,16 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ApplicationRef, DoBootstrap, Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { ElementComponent } from './element/element.component';
 import { AccommodationService } from './services/accommodations.service';
 import { DistancePipe } from './services/types';
+import {MatSelectModule} from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule} from '@angular/material/button';
 
 
 
@@ -20,9 +23,11 @@ import { DistancePipe } from './services/types';
   imports: [
     BrowserModule,
     HttpClientModule,
-    // MdbPopoverModule,
-    // BrowserAnimationsModule,
     FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule
   ],
   providers: [AccommodationService],
   bootstrap: [environment.element ? [] : AppComponent],

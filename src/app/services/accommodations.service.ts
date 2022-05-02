@@ -23,16 +23,11 @@ export class AccommodationService {
   
           for(let el of list){
             if (el.GpsPoints?.position?.Latitude){
-                accommodations.push({latitude: el.GpsPoints?.position?.Latitude, longitude: el.GpsPoints?.position?.Longitude, name: el.Shortname, accType: el?.AccoTypeId, accoDetail: el?.AccoDetail})
+                accommodations.push({latitude: el.GpsPoints?.position?.Latitude, longitude: el.GpsPoints?.position?.Longitude, name: el.Shortname, accType: el?.AccoTypeId, accoDetail: el?.AccoDetail, all: el})
             }
           }
   
-          return [{
-            visible: true,
-            height: 25,
-            width: 25,
-            dataSource: accommodations
-        }];
+          return accommodations
         }
         ));
    }
@@ -49,35 +44,20 @@ export class AccommodationService {
         console.log(resp.data)
 
         for(let el of list){
-          chargingStations.push({latitude: el.scoordinate.y, longitude: el.scoordinate.x, name: el.sname, available: el.savailable, scode: el?.scode})
+          chargingStations.push({id: el.Id, latitude: el.scoordinate.y, longitude: el.scoordinate.x, name: el.sname, available: el.savailable, scode: el?.scode, address: el.smetadata.address, accessType: el.smetadata.accessType, capacity: el.smetadata.capacity, city: el.smetadata.city, paymentInfo: el.smetadata.paymentInfo, reservable: el.smetadata.reservable})
         }
 
-        return [{
-          visible: true,
-          height: 25,
-          width: 25,
-          dataSource: chargingStations
-        }];
+        return chargingStations
 
         }
         ));
    }
 
-  //  getAccommodationsNearEcharging(points: any, typeFilter = '1') {
-  //   let queryParams = new HttpParams();
-  //   queryParams = queryParams.append("pagesize", 1000); // HOW TO GET ALL OF THEM?
-  //   queryParams = queryParams.append("typefilter", typeFilter);
-  //   queryParams = queryParams.append("radius", 5000);
+   requestStationPlugs(station_id: any) {
 
+    return this.http.get<any>("https://mobility.api.opendatahub.bz.it/v2/flat/EChargingPlug?limit=-1&offset=0&where=sactive.eq.true,pcode.eq."+station_id+"&shownull=false", {observe: 'body'}).pipe(map(resp => 
+    resp
+        ));
+  }
 
-  //   return from(points).pipe(
-  //   concatMap(entry => {
-  //     let itemQueryParams = queryParams
-  //     itemQueryParams = itemQueryParams.append("latitude", (entry as any).latitude);
-  //     itemQueryParams = itemQueryParams.append("longitude", (entry as any).longitude);
-
-  //     return this.http.get<any>("https://api.tourism.testingmachine.eu/v1/Accommodation", {observe: 'body', params: itemQueryParams})
-  //   })
-  //   );
-  //  }
 }

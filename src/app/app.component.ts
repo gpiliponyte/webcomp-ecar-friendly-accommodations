@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Feature, Overlay } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine';
 import ZoomSlider from 'ol/control/ZoomSlider';
+import Zoom from 'ol/control/Zoom';
 import { LineString, Point } from 'ol/geom';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -14,6 +15,7 @@ import CircleStyle from 'ol/style/Circle';
 import View from 'ol/View';
 import { AccommodationService } from './services/accommodations.service';
 import { COLOR, compare } from './services/types';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -28,6 +30,16 @@ export class AppComponent implements OnInit {
   accType = ""
   link = ""
   phone = ""
+  address = ""
+  accessType = ""
+  capacity = ""
+  city = ""
+  paymentInfo = ""
+  reservable = ""
+  plugInfo: any = null
+  all: any = null
+  // id = "A47_00000005"
+  
   distanceTillEChargingStation = 1500
   accommodationFeatures: any = []
   nearbyStations: any = []
@@ -35,12 +47,20 @@ export class AppComponent implements OnInit {
   @ViewChild("banner") banner!: ElementRef;
   @ViewChild("ebanner") ebanner!: ElementRef;
 
+  accommodationTypesSelected = new FormControl();
+  accommodations: string[] = ["BedBreakfast", 'HotelPension', 'Farm', 'Camping', 'Youth', 'Mountain', 'Apartment'];
+
+  languageSelected = new FormControl()
+  languages: any[] = [{value: "en", img: "assets/flag_en.svg"}, {value: "it", img: "assets/flag_it.svg"}, {value: "de", img: "assets/flag_de.svg"}];
+
+  selected = {value: "en", img: "assets/flag_en.svg"}
+
+
 
   constructor(private accommodationService: AccommodationService){}
 
 
   onFilterApplied() {
-    console.log("filter applied")
     let layer = this.map.getAllLayers()[2]
     this.map.removeLayer(layer)
     
@@ -77,8 +97,8 @@ export class AppComponent implements OnInit {
               })
             }) : new Icon({
               opacity: 1,
-              src: 'assets/marker.svg',
-              scale: 1
+              src: 'assets/my_e_car_pic.svg',
+              scale: 0.5
             }),
             text: new Text(
               {
@@ -114,32 +134,42 @@ export class AppComponent implements OnInit {
   });
 
   this.map.addControl(new ZoomSlider({}))
-  // this.map.addControl(new ScaleLine({}))
+  this.map.addControl(new ScaleLine({}))
+
+  // this.accommodationService.requestStationPlugs(this.id).subscribe(el => {
+  //   console.log("plugs", el)
+  // })
 
 
-  this.accommodationService.getEcharging().subscribe(array => {
+  this.accommodationService.getEcharging().subscribe(items => {
 
     let points: { point: Point; item: { latitude: any; longitude: any; name: any; available: any; scode: any; }; }[] = []
 
     let features = []
-    let items = array[0].dataSource
+
     for(let item of items){
       let point = new Point(fromLonLat([item.longitude, item.latitude]))
       let feature = new Feature({geometry: point })
       points.push({point, item})
       feature.set("name", item.name)
       feature.set("type", "E-Charging Station")
-
+      feature.set("address", item.address)
+      feature.set("accessType", item.accessType)
+      feature.set("capacity", item.capacity)
+      feature.set("city", item.city)
+      feature.set("paymentInfo", item.paymentInfo)
+      feature.set("reservable", item.reservable)
+      feature.set("scode", item.scode)
+      
       features.push(feature)
     }
 
     this.addLayer(COLOR.ECHARGER, features)
 
 
-    this.accommodationService.getAccommodations().subscribe(array => {
+    this.accommodationService.getAccommodations().subscribe(items => {
 
       let features = []
-      let items = array[0].dataSource
 
       for(let item of items){
         let point = new Point(fromLonLat([item.longitude, item.latitude]))
@@ -153,6 +183,8 @@ export class AppComponent implements OnInit {
         feature.set("accType", item.accType)
         feature.set("longitude", item.longitude)
         feature.set("latitude", item.latitude)
+        feature.set("all", item.all)
+
 
         let distancesToEchargingStations = []
 
@@ -196,13 +228,25 @@ export class AppComponent implements OnInit {
           this.nearbyStations = object.get("distances").slice(0, 3);
           this.link = object.get("link")
           this.phone = object.get("phone")
+          this.all = object.get("all")
           this.banner.nativeElement.style.top = e.pixel[1] + "px"
           this.banner.nativeElement.style.left = e.pixel[0] + "px";
           this.banner.nativeElement.style.display = 'inherit'
         } else {
-          this.ebanner.nativeElement.style.top = e.pixel[1] + "px"
-          this.ebanner.nativeElement.style.left = e.pixel[0] + "px";
-          this.ebanner.nativeElement.style.display = 'inherit'
+          //{address: el.smetadata.address, accessType: el.smetadata.accessType, capacity: el.smetadata.capacity, city: el.smetadata.city, paymentInfo: el.smetadata.paymentInfo, reservable: el.smetadata.reservable}
+          this.accommodationService.requestStationPlugs(object.get("scode")).subscribe(el => {
+            console.log(el.data[0])
+            this.plugInfo = el
+            this.address = object.get("address")
+            this.accessType = object.get("accessType")
+            this.capacity = object.get("capacity")
+            this.city = object.get("city")
+            this.paymentInfo = object.get("paymentInfo")
+            this.reservable = object.get("reservable")
+            this.ebanner.nativeElement.style.top = e.pixel[1] + "px"
+            this.ebanner.nativeElement.style.left = e.pixel[0] + "px";
+            this.ebanner.nativeElement.style.display = 'inherit'
+          })
         }
         
 

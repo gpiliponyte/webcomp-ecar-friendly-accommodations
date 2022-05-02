@@ -10,8 +10,8 @@ const concat = require('concat');
 
   await fs.ensureDir('elements');
   await concat(files, 'elements/hotel-element.js');
-  // await fs.copyFile(
-  //   './dist/air/styles.css',
-  //   'elements/login-element.styles.css'
-  // );
+  await fs.copyFile(
+    './dist/accommodation-finder/styles.css',
+    'elements/styles.css'
+  );
 })();

@@ -24,8 +24,8 @@ export enum AccommodationType {
 }
 
 export enum COLOR {
-  ACCOMMODATION = '#3399CC',
-  ECHARGER = '#32CD32'
+  ACCOMMODATION = '#3f51b5', //'#3399CC',
+  ECHARGER = '#8acd32'//'#32CD32'
 }
 
 import { Pipe, PipeTransform } from '@angular/core';

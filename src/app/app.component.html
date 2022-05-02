@@ -1,52 +1,86 @@
 
-<div style="position: relative;">
-    <div>
+<div id="main-container">
 
-        <div id="settings">
-            <div style = "padding: 10px 5px; display: flex; flex-direction: row; background: white; position: absolute; top: 0; z-index: 2; width: -webkit-fill-available;">
-                <div style="display: inline-block;">
-                    <label  style = "display: block;  font-weight: 500; margin-left: 16px;" for="volume">Distance to nearest E-charging station</label>
-                    <span style="font-size: 8px;">0 m </span><input style = "width: 280px;" type="range" id="volume" name="volume"
-                       min="0" max="10000" [(ngModel)]="distanceTillEChargingStation"><span style="font-size: 8px;">10 km</span>
-                       <div style="margin-left: 100px;
-                       font-size: 10px;">Distance: <span style="font-style: italic;">{{distanceTillEChargingStation | distance}}</span></div>
-                </div>
-                <div style = "margin-left: 30px;">
-                    <label style = "font-weight: 500;" for="cars">Choose an accomodation type</label>
-                    <select name="cars" style = "height: 20px; font-size: 12px; display: block;" id="cars">
-                      <option value="BedBreakfast">Bed & Breakfast</option>
-                      <option value="HotelPension">Hotel Pension</option>
-                      <option value="Farm">Farm</option>
-                      <option value="Camping">Camping</option>
-                      <option value="Youth">Youth</option>
-                      <option value="Mountain">Mountain</option>
-                      <option value="Apartment">Apartment</option>
-                    </select>
-                </div>
-                <div style="margin-left: 30px; margin-top: 7px"><button (click)="onFilterApplied()">APPLY</button></div>
+    <div id="settings">
+
+        <div>
+            <label id="distance-label" for="distance">Distance to nearest E-charging station</label>
+            <span class="distance-span">0 m </span>
+            <input type="range" id="distance-input" name="distance"
+                min="0" max="10000" [(ngModel)]="distanceTillEChargingStation">
+            <span class="distance-span">10 km</span>
+            <div id ="distance-counter">
+                Distance: <span class="italic">{{distanceTillEChargingStation | distance}}</span>
             </div>
         </div>
-    
-        <div id="map" class="map"></div>
+
+        <div class="settings-spacing">
+            <mat-form-field appearance="legacy">
+                <mat-label>Accommodation Type</mat-label>
+                <mat-select [formControl]="accommodationTypesSelected" multiple>
+                    <mat-option *ngFor="let acc of accommodations" [value]="acc">{{acc}}</mat-option>
+                </mat-select>
+                </mat-form-field>
+        </div>
+
+        <div class="settings-spacing">
+            <mat-form-field id="language-field" appearance="legacy">
+                <mat-label><img [src]="selected.img" width="20px" height="20px"></mat-label>
+                <mat-select [(value)]="selected"  [formControl]="languageSelected">
+                    <mat-option  *ngFor="let lan of languages" [value]="lan"><img [src]="lan.img" width="20px" height="20px"> {{lan.value}}</mat-option>
+                </mat-select>
+                </mat-form-field>
+        </div>
+
+        <div class="settings-spacing" id="settings-button">
+            <button (click)="onFilterApplied()" mat-flat-button color="primary">APPLY</button>
+        </div>
     </div>
 
-    <div #banner style="background: white; position: absolute; top: 300px; left: 100px; display: none; padding: 10px;">
+    <div id="map" class="map"></div>
+
+    <div #banner class="popover">
         <h3>{{name}}</h3>
-        <h5>{{type}}: {{accType}}</h5>
-        <div><a [href]="link" target="_blank">Website</a></div>
-        <p>Telephone: {{phone}}</p>
-        <h6>Stations nearby</h6>
+        <h5>Accommodation</h5>
+        <div class="popover-tag-container">
+            <span class="popup-tag accommodation-tag">{{accType}}</span>
+            <span class="popup-tag accommodation-tag">{{all?.AccoCategory?.Id}}</span>
+            <span class="popup-tag accommodation-tag">{{all?.Altitude}} m</span>
+        </div>
+        <div><img src="assets/website.svg" width="20px" height="20px"><a [href]="link" target="_blank"> Website</a></div>
+        <div><img src="assets/telephone.svg" width="20px" height="20px">{{phone}}</div>
+        <div><img src="assets/pin.svg" width="20px" height="20px">{{all?.AccoDetail?.en?.Street}}, {{all?.AccoDetail?.en?.City}}</div>
+
+        <h6 id="stations-nearby-title">Stations nearby</h6>
         <tr *ngFor="let station of nearbyStations">
-            <td>{{station.station.item.name}} <span style="font-style: italic;">({{station.distance | distance}} away)</span></td>
+            <td>{{station.station.item.name}} <span class="italic">({{station.distance | distance}} away)</span></td>
         </tr>
     </div>
 
-    <div #ebanner style="background: white; position: absolute; top: 300px; left: 100px; display: none; padding: 10px;">
+    <div #ebanner class="popover">
         <h3>{{name}}</h3>
         <h5>{{type}}</h5>
-        <h6>Contact info</h6>
-        <p>Telephone: +39 001 678 82</p>
-        <p>Website: link</p>
+        <div class="popover-tag-container">
+            <span class="popup-tag echarger-tag">{{accessType}}</span>
+            <span class="popup-tag echarger-tag">{{reservable ? 'Reservable' : 'Not Reservable'}}</span>
+            <span class="popup-tag echarger-tag">{{capacity}} {{capacity == '1' ? 'outlet' : 'outlets'}}</span>
+        </div>
+        <div><img src="assets/cash.svg" width="20px" height="20px"><a [href]="paymentInfo" target="_blank"> Payment Info</a></div>
+
+        <div><img src="assets/pin.svg" width="20px" height="20px">{{address}}</div>
+        <p>{{city}}</p>
+    
+        <div *ngIf="plugInfo">
+            <div *ngFor="let plug of plugInfo.data">
+                <div class="station-nearby" *ngIf="plug.smetadata.outlets[0] as outlet">
+                    <div class="bold">{{outlet.id}}. {{outlet.outletTypeCode}}</div>
+                    <div> Max Power: {{outlet.maxPower}} kWh, Current: {{outlet.minCurrent}} - {{outlet.maxCurrent}} A</div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
+
+
+

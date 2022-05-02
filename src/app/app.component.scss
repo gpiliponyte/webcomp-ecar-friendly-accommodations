@@ -7,13 +7,97 @@
 
 .popover {
   background: white; 
-  // padding: 10px;
-}
-
-.ol-control {
   position: absolute;
-  background-color: red;
-  border-radius: 4px;
-  padding: 2px;
+  display: none; 
+  padding: 10px;
+  max-width: 400px;
 }
 
+
+input {
+  accent-color: #3f51b5;
+}
+
+#main-container {
+  position: relative;
+}
+
+#settings {
+  padding: 10px 5px; 
+  display: flex; 
+  flex-direction: row; 
+  background: white; 
+  position: absolute; 
+  top: 0; 
+  z-index: 2; 
+  width: -webkit-fill-available;
+}
+
+#distance-label{
+  display: block;  
+  font-weight: 500; 
+  margin-left: 16px;
+}
+
+.distance-span {
+  font-size: 8px;
+}
+
+.italic {
+  font-style: italic;
+}
+
+#distance-counter {
+  margin-left: 100px;
+  font-size: 10px;
+}
+
+#distance-input {
+  width: 260px;
+}
+
+.settings-spacing {
+  margin-left: 30px;
+}
+
+#settings-button {
+  margin-top: 10px;
+}
+
+.popup-tag {
+  margin-right: 10px; 
+  padding: 3px; 
+  white-space:nowrap;
+  text-transform: lowercase
+}
+
+.echarger-tag {
+  background: #8acd32;
+}
+
+.accommodation-tag {
+  background: #3f51b5; 
+  color: white
+}
+
+.popover-tag-container {
+  margin-bottom: 10px;
+}
+
+.stations-nearby-title {
+  margin-top: 10px;
+}
+
+.station-nearby {
+  background: #8acd32; 
+  padding: 5px; 
+  margin: 3px;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+#language-field { 
+  width: 40px;
+}
