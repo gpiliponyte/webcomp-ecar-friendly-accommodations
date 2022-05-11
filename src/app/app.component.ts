@@ -1,6 +1,6 @@
 
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Feature, Overlay } from 'ol';
+import { Feature } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine';
 import ZoomSlider from 'ol/control/ZoomSlider';
 import { LineString, Point } from 'ol/geom';
@@ -12,8 +12,8 @@ import { Cluster, OSM, Vector } from 'ol/source';
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import View from 'ol/View';
-import { AccommodationService } from './services/accommodations.service';
-import { COLOR, compare } from './services/types';
+import { FetchDataService } from './services/fetch-data.service';
+import { Accommodation, COLOR, compare, EChargingStation } from './services/types';
 import { FormControl } from '@angular/forms';
 
 
@@ -24,19 +24,12 @@ import { FormControl } from '@angular/forms';
 })
 export class AppComponent implements OnInit {
   public map!: Map
-  name = ""
-  type = ""
-  accType = ""
-  link = ""
-  phone = ""
-  address = ""
-  accessType = ""
-  capacity = ""
-  city = ""
-  paymentInfo = ""
-  reservable = ""
   plugInfo: any = null
-  all: any = null
+
+  loading: boolean = true
+
+  currentEStation: EChargingStation | undefined
+  currentAccommodation: Accommodation | undefined
   
   distanceTillEChargingStation = 1500
   accommodationFeatures: any = []
@@ -48,19 +41,18 @@ export class AppComponent implements OnInit {
   @Input() language = 'en'
   @Input() centerCoordinates = [11.3548, 46.4983]
 
+  // ACCOMMODATION TYPE SELECTBOX 
   accommodationTypesSelected = new FormControl();
   selectedAccommodations:any = [];
   accommodations: string[] = ["BedBreakfast", 'HotelPension', 'Farm', 'Camping', 'Youth', 'Mountain', 'Apartment', 'Not defined'];
-  //accommodations: any[] = [{value: "BedBreakfast", id: 1}, {value: "HotelPension", id: 2}, {value: "HotelPension", id: 2}, 'Camping', 'Youth', 'Mountain', 'Apartment'];
-
+  
+  // LANGUAGE SELECTBOX
   languageSelected = new FormControl()
+  selected = {value: "en", img: "assets/flag_en.svg"}
   languages: any[] = [{value: "en", img: "assets/flag_en.svg"}, {value: "it", img: "assets/flag_it.svg"}, {value: "de", img: "assets/flag_de.svg"}];
 
-  selected = {value: "en", img: "assets/flag_en.svg"}
 
-
-
-  constructor(private accommodationService: AccommodationService){}
+  constructor(private fetchDataService: FetchDataService){}
 
 
   onFilterApplied() {
@@ -70,10 +62,10 @@ export class AppComponent implements OnInit {
     }
 
     console.log(this.selectedAccommodations)
-    console.log(this.accommodationFeatures[0].get("accType"))
+    console.log(this.accommodationFeatures[0].get("info").accType)
     
     //@ts-ignore
-    let featuresSelected = this.accommodationFeatures.filter(el => this.selectedAccommodations.includes(el.get("accType")) && el.get("distances")[0].distance < this.distanceTillEChargingStation)
+    let featuresSelected = this.accommodationFeatures.filter(el => this.selectedAccommodations.includes(el.get("info").accType) && el.get("distances")[0].distance < this.distanceTillEChargingStation)
 
     console.log(featuresSelected)
     this.addLayer(COLOR.ACCOMMODATION, featuresSelected)
@@ -84,7 +76,7 @@ export class AppComponent implements OnInit {
     let source = new Vector({features: features})
  
     let clusterSource = new Cluster({
-      distance: 100,//parseInt('40', 10),
+      distance: 100,
       source: source
     });
 
@@ -99,7 +91,8 @@ export class AppComponent implements OnInit {
             image: size > 0 ? new CircleStyle({
               radius: size > 1 ? size*0.05+10 : 5,
               stroke: new Stroke({
-                color: '#fff'
+                color: '#fff',
+                width: 2
               }),
               fill: new Fill({
                 color:  color
@@ -127,13 +120,7 @@ export class AppComponent implements OnInit {
   }
 
   onAccommodationSelectionChange(event: any) {
-    console.log(event)
     this.selectedAccommodations = event
-    //@ts-ignore
-    // let featuresSelected = this.accommodationFeatures.filter(el => event.value.includes(el.get("accType")) && el.get("distances")[0].distance < this.distanceTillEChargingStation)
-
-    // this.addLayer(COLOR.ACCOMMODATION, featuresSelected)
-    // this.accommodationService.getAccommodationsByType(1).subscribe(el => console.log(el))
   }
 
 
@@ -155,25 +142,17 @@ export class AppComponent implements OnInit {
   this.map.addControl(new ZoomSlider({}))
   this.map.addControl(new ScaleLine({}))
 
-  this.accommodationService.getEcharging().subscribe(items => {
+  this.fetchDataService.getEcharging().subscribe(items => {
 
-    let points: { point: Point; item: { latitude: any; longitude: any; name: any; available: any; scode: any; }; }[] = []
+    let points: { point: Point; item: EChargingStation }[] = []
 
     let features = []
 
     for(let item of items){
       let point = new Point(fromLonLat([item.longitude, item.latitude]))
       let feature = new Feature({geometry: point })
+      feature.set("info", item)
       points.push({point, item})
-      feature.set("name", item.name)
-      feature.set("type", "E-Charging Station")
-      feature.set("address", item.address)
-      feature.set("accessType", item.accessType)
-      feature.set("capacity", item.capacity)
-      feature.set("city", item.city)
-      feature.set("paymentInfo", item.paymentInfo)
-      feature.set("reservable", item.reservable)
-      feature.set("scode", item.scode)
       
       features.push(feature)
     }
@@ -181,7 +160,7 @@ export class AppComponent implements OnInit {
     this.addLayer(COLOR.ECHARGER, features)
 
 
-    this.accommodationService.getAccommodations().subscribe(items => {
+    this.fetchDataService.getAccommodations().subscribe(items => {
 
       let features = []
 
@@ -189,16 +168,7 @@ export class AppComponent implements OnInit {
         let point = new Point(fromLonLat([item.longitude, item.latitude]))
 
         let feature = new Feature({geometry: point})
-        feature.set("name", item.name)
-        feature.set("link", item.accoDetail.en.Website)
-        feature.set("phone", item.accoDetail.en.Phone)
-        feature.set("city", item.accoDetail.en.City)
-        feature.set("type", "Hotel")
-        feature.set("accType", item.accType)
-        feature.set("longitude", item.longitude)
-        feature.set("latitude", item.latitude)
-        feature.set("all", item.all)
-
+        feature.set("info", item)
 
         let distancesToEchargingStations = []
 
@@ -218,6 +188,8 @@ export class AppComponent implements OnInit {
 
       this.accommodationFeatures = features
 
+      this.loading = false
+
       // let featuresSelected = features.filter(el => el.get("distances")[0].distance < this.distanceTillEChargingStation)
 
       // this.addLayer(COLOR.ACCOMMODATION, featuresSelected)
@@ -234,29 +206,21 @@ export class AppComponent implements OnInit {
       if(feature.get("features").length == 1) {
         let object = feature.get("features")[0]
 
-        this.name = object.get("name")
-        this.type = object.get("type")
-        this.accType = object.get("accType")
 
-        if(object.get("type") == "Hotel") {
+        if(object.get("info").type == "Hotel") {
           this.nearbyStations = object.get("distances").slice(0, 3);
-          this.link = object.get("link")
-          this.phone = object.get("phone")
-          this.all = object.get("all")
+          this.currentAccommodation = object.get("info")
+
           this.banner.nativeElement.style.top = e.pixel[1] + "px"
           this.banner.nativeElement.style.left = e.pixel[0] + "px";
           this.banner.nativeElement.style.display = 'inherit'
         } else {
           //{address: el.smetadata.address, accessType: el.smetadata.accessType, capacity: el.smetadata.capacity, city: el.smetadata.city, paymentInfo: el.smetadata.paymentInfo, reservable: el.smetadata.reservable}
-          this.accommodationService.requestStationPlugs(object.get("scode")).subscribe(el => {
-            console.log(el.data[0])
+          this.fetchDataService.requestStationPlugs(object.get("info").scode).subscribe(el => {
+            console.log(el)
             this.plugInfo = el
-            this.address = object.get("address")
-            this.accessType = object.get("accessType")
-            this.capacity = object.get("capacity")
-            this.city = object.get("city")
-            this.paymentInfo = object.get("paymentInfo")
-            this.reservable = object.get("reservable")
+            this.currentEStation = object.get("info")
+
             this.ebanner.nativeElement.style.top = e.pixel[1] + "px"
             this.ebanner.nativeElement.style.left = e.pixel[0] + "px";
             this.ebanner.nativeElement.style.display = 'inherit'

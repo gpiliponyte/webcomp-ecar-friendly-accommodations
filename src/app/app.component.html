@@ -1,6 +1,8 @@
 
 <div id="main-container">
 
+    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="60"></mat-progress-spinner>
+
     <div id="settings">
 
         <div>
@@ -40,16 +42,16 @@
     <div id="map" class="map"></div>
 
     <div #banner class="popover">
-        <h3>{{name}}</h3>
+        <h3>{{currentAccommodation?.name}}</h3>
         <h5>Accommodation</h5>
         <div class="popover-tag-container">
-            <span class="popup-tag accommodation-tag">{{accType}}</span>
-            <span class="popup-tag accommodation-tag">{{all?.AccoCategory?.Id}}</span>
-            <span class="popup-tag accommodation-tag">{{all?.Altitude}} m</span>
+            <span class="popup-tag accommodation-tag">{{currentAccommodation?.accType}}</span>
+            <span class="popup-tag accommodation-tag">{{currentAccommodation?.accoCat}}</span>
+            <span class="popup-tag accommodation-tag">{{currentAccommodation?.altitude}} m</span>
         </div>
-        <div><img src="assets/website.svg" width="20px" height="20px"><a [href]="link" target="_blank"> Website</a></div>
-        <div><img src="assets/telephone.svg" width="20px" height="20px">{{phone}}</div>
-        <div><img src="assets/pin.svg" width="20px" height="20px">{{all?.AccoDetail?.en?.Street}}, {{all?.AccoDetail?.en?.City}}</div>
+        <div><img src="assets/website.svg" width="20px" height="20px"><a [href]="currentAccommodation?.website" target="_blank"> Website</a></div>
+        <div><img src="assets/telephone.svg" width="20px" height="20px">{{currentAccommodation?.phone}}</div>
+        <div><img src="assets/pin.svg" width="20px" height="20px">{{currentAccommodation?.address}}, {{currentAccommodation?.city}}</div>
 
         <h6 id="stations-nearby-title">Stations nearby</h6>
         <tr *ngFor="let station of nearbyStations">
@@ -58,23 +60,23 @@
     </div>
 
     <div #ebanner class="popover">
-        <h3>{{name}}</h3>
-        <h5>{{type}}</h5>
+        <h3>{{currentEStation?.name}}</h3>
+        <h5>{{currentEStation?.type}}</h5>
         <div class="popover-tag-container">
-            <span class="popup-tag echarger-tag">{{accessType}}</span>
-            <span class="popup-tag echarger-tag">{{reservable ? 'Reservable' : 'Not Reservable'}}</span>
-            <span class="popup-tag echarger-tag">{{capacity}} {{capacity == '1' ? 'outlet' : 'outlets'}}</span>
+            <span class="popup-tag echarger-tag">{{currentEStation?.accessType}}</span>
+            <span class="popup-tag echarger-tag">{{currentEStation?.reservable ? 'Reservable' : 'Not Reservable'}}</span>
+            <span class="popup-tag echarger-tag">{{currentEStation?.capacity}} {{currentEStation?.capacity == '1' ? 'outlet' : 'outlets'}}</span>
         </div>
-        <div><img src="assets/cash.svg" width="20px" height="20px"><a [href]="paymentInfo" target="_blank"> Payment Info</a></div>
+        <div><img src="assets/cash.svg" width="20px" height="20px"><a [href]="currentEStation?.paymentInfo" target="_blank"> Payment Info</a></div>
 
-        <div><img src="assets/pin.svg" width="20px" height="20px">{{address}}</div>
-        <p>{{city}}</p>
+        <div><img src="assets/pin.svg" width="20px" height="20px">{{currentEStation?.address}}</div>
+        <p>{{currentEStation?.city}}</p>
     
         <div *ngIf="plugInfo">
-            <div *ngFor="let plug of plugInfo.data">
-                <div class="station-nearby" *ngIf="plug.smetadata.outlets[0] as outlet">
-                    <div class="bold">{{outlet.id}}. {{outlet.outletTypeCode}}</div>
-                    <div> Max Power: {{outlet.maxPower}} kWh, Current: {{outlet.minCurrent}} - {{outlet.maxCurrent}} A</div>
+            <div *ngFor="let plug of plugInfo">
+                <div class="station-nearby">
+                    <div class="bold">{{plug.id}}. {{plug.outletTypeCode}}</div>
+                    <div> Max Power: {{plug.maxPower}} kWh, Current: {{plug.minCurrent}} - {{plug.maxCurrent}} A</div>
                 </div>
             </div>
         </div>

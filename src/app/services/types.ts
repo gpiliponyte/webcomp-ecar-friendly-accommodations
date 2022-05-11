@@ -1,18 +1,3 @@
-export interface Accommodation {
-    GpsPoints: {
-        position: {
-            Latitude: number,
-            Longitude: number
-        }
-    },
-    Shortname: string,
-    accType: string
-  }
-
-export interface AccResponse {
-    Items: Accommodation[]
-}
-
 export enum AccommodationType {
   HotelPension = 'HotelPension',
   BedBreakfast = 'BedBreakfast',
@@ -21,6 +6,42 @@ export enum AccommodationType {
   Youth = 'Youth',
   Mountain = 'Mountain',
   Apartment = 'Apartment'
+}
+
+export interface EChargingStation {
+  id: string,
+  latitude: number,
+  longitude: number,
+  name: string,
+  type: string,
+  accessType: string,
+  capacity: string,
+  address: string,
+  city: string,
+  scode: string,
+  paymentInfo: string,
+  reservable: boolean,
+}
+
+export interface Accommodation {
+  latitude: number,
+  longitude: number,
+  name: string,
+  type: string,
+  accType: string,
+  accoCat: string,
+  address: string,
+  city: string,
+  website: string,
+  altitude: number,
+  phone: string
+}
+export interface Plug {
+  id: number,
+  outletTypeCode: string,
+  maxPower: number,
+  minCurrent: number,
+  maxCurrent: number
 }
 
 export enum COLOR {
