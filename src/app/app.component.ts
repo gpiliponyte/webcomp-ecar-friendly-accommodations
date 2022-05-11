@@ -1,9 +1,8 @@
 
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Feature, Overlay } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine';
 import ZoomSlider from 'ol/control/ZoomSlider';
-import Zoom from 'ol/control/Zoom';
 import { LineString, Point } from 'ol/geom';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -38,7 +37,6 @@ export class AppComponent implements OnInit {
   reservable = ""
   plugInfo: any = null
   all: any = null
-  // id = "A47_00000005"
   
   distanceTillEChargingStation = 1500
   accommodationFeatures: any = []
@@ -47,8 +45,13 @@ export class AppComponent implements OnInit {
   @ViewChild("banner") banner!: ElementRef;
   @ViewChild("ebanner") ebanner!: ElementRef;
 
+  @Input() language = 'en'
+  @Input() centerCoordinates = [11.3548, 46.4983]
+
   accommodationTypesSelected = new FormControl();
-  accommodations: string[] = ["BedBreakfast", 'HotelPension', 'Farm', 'Camping', 'Youth', 'Mountain', 'Apartment'];
+  selectedAccommodations:any = [];
+  accommodations: string[] = ["BedBreakfast", 'HotelPension', 'Farm', 'Camping', 'Youth', 'Mountain', 'Apartment', 'Not defined'];
+  //accommodations: any[] = [{value: "BedBreakfast", id: 1}, {value: "HotelPension", id: 2}, {value: "HotelPension", id: 2}, 'Camping', 'Youth', 'Mountain', 'Apartment'];
 
   languageSelected = new FormControl()
   languages: any[] = [{value: "en", img: "assets/flag_en.svg"}, {value: "it", img: "assets/flag_it.svg"}, {value: "de", img: "assets/flag_de.svg"}];
@@ -62,11 +65,17 @@ export class AppComponent implements OnInit {
 
   onFilterApplied() {
     let layer = this.map.getAllLayers()[2]
-    this.map.removeLayer(layer)
+    if(layer) {
+      this.map.removeLayer(layer)
+    }
+
+    console.log(this.selectedAccommodations)
+    console.log(this.accommodationFeatures[0].get("accType"))
     
     //@ts-ignore
-    let featuresSelected = this.accommodationFeatures.filter(el=> el.get("distances")[0].distance < this.distanceTillEChargingStation)
+    let featuresSelected = this.accommodationFeatures.filter(el => this.selectedAccommodations.includes(el.get("accType")) && el.get("distances")[0].distance < this.distanceTillEChargingStation)
 
+    console.log(featuresSelected)
     this.addLayer(COLOR.ACCOMMODATION, featuresSelected)
 
   }
@@ -117,6 +126,16 @@ export class AppComponent implements OnInit {
     this.map.addLayer(clusters);
   }
 
+  onAccommodationSelectionChange(event: any) {
+    console.log(event)
+    this.selectedAccommodations = event
+    //@ts-ignore
+    // let featuresSelected = this.accommodationFeatures.filter(el => event.value.includes(el.get("accType")) && el.get("distances")[0].distance < this.distanceTillEChargingStation)
+
+    // this.addLayer(COLOR.ACCOMMODATION, featuresSelected)
+    // this.accommodationService.getAccommodationsByType(1).subscribe(el => console.log(el))
+  }
+
 
   ngOnInit(): void {
     this.map = new Map({
@@ -127,7 +146,7 @@ export class AppComponent implements OnInit {
     ],
     target: 'map',
     view: new View({ 
-      center: transform([11.3548, 46.4983], 'EPSG:4326', 'EPSG:3857'),
+      center: transform(this.centerCoordinates, 'EPSG:4326', 'EPSG:3857'),
       zoom: 10, maxZoom: 20, minZoom: 8
     }),
     controls: []
@@ -135,11 +154,6 @@ export class AppComponent implements OnInit {
 
   this.map.addControl(new ZoomSlider({}))
   this.map.addControl(new ScaleLine({}))
-
-  // this.accommodationService.requestStationPlugs(this.id).subscribe(el => {
-  //   console.log("plugs", el)
-  // })
-
 
   this.accommodationService.getEcharging().subscribe(items => {
 
@@ -204,9 +218,9 @@ export class AppComponent implements OnInit {
 
       this.accommodationFeatures = features
 
-      let featuresSelected = features.filter(el => el.get("distances")[0].distance < this.distanceTillEChargingStation)
+      // let featuresSelected = features.filter(el => el.get("distances")[0].distance < this.distanceTillEChargingStation)
 
-      this.addLayer(COLOR.ACCOMMODATION, featuresSelected)
+      // this.addLayer(COLOR.ACCOMMODATION, featuresSelected)
 
     })
 

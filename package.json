@@ -25,6 +25,8 @@
     "@angular/router": "~13.3.0",
     "@asymmetrik/ngx-leaflet": "^13.0.2",
     "@ng-bootstrap/ng-bootstrap": "^12.0.2",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
     "@popperjs/core": "^2.10.2",
     "@syncfusion/ej2-angular-maps": "^19.4.56",
     "bootstrap": "^5.1.3",

@@ -12,7 +12,7 @@ export class AccommodationService {
 
    getAccommodations(){
     let queryParams = new HttpParams();
-    queryParams = queryParams.append("pagesize", 1000); // HOW TO GET ALL OF THEM?
+    queryParams = queryParams.append("pagesize", 10000); // HOW TO GET ALL OF THEM?
     return this.http.get<any>("https://api.tourism.testingmachine.eu/v1/Accommodation", {observe: 'body', params: queryParams}).pipe(map(resp => {
         
       console.log(resp.Items)
@@ -31,6 +31,30 @@ export class AccommodationService {
         }
         ));
    }
+
+   getAccommodationsByType(type: number){
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("typefilter", type); // HOW TO GET ALL OF THEM?
+    queryParams = queryParams.append("pagesize", 10000); 
+    return this.http.get<any>("https://api.tourism.testingmachine.eu/v1/Accommodation", {observe: 'body', params: queryParams}).pipe(map(resp => {
+        
+      console.log(resp.Items)
+          let accommodations: any = []
+  
+          let list = resp.Items
+  
+  
+          for(let el of list){
+            if (el.GpsPoints?.position?.Latitude){
+                accommodations.push({latitude: el.GpsPoints?.position?.Latitude, longitude: el.GpsPoints?.position?.Longitude, name: el.Shortname, accType: el?.AccoTypeId, accoDetail: el?.AccoDetail, all: el})
+            }
+          }
+  
+          return accommodations
+        }
+        ));
+   }
+
 
    getEcharging(){
     let queryParams = new HttpParams();

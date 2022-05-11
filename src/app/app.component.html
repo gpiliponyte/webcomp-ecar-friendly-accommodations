@@ -17,7 +17,7 @@
         <div class="settings-spacing">
             <mat-form-field appearance="legacy">
                 <mat-label>Accommodation Type</mat-label>
-                <mat-select [formControl]="accommodationTypesSelected" multiple>
+                <mat-select (selectionChange)="onAccommodationSelectionChange($event.value)" [formControl]="accommodationTypesSelected" multiple>
                     <mat-option *ngFor="let acc of accommodations" [value]="acc">{{acc}}</mat-option>
                 </mat-select>
                 </mat-form-field>
@@ -81,6 +81,7 @@
     </div>
 
 </div>
+
 
 
 
