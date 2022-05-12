@@ -15,9 +15,12 @@ export class FetchDataService {
 
   getAccommodations(): Observable<Accommodation[]> {
     let queryParams = new HttpParams();
-    queryParams = queryParams.append('pagesize', 10000); // HOW TO GET ALL OF THEM?
-    queryParams = queryParams.append('fields', 'GpsPoints,Shortname,AccoTypeId,AccoCategory,Altitude,AccoDetail');
-    
+    queryParams = queryParams.append('pagesize', 100); // HOW TO GET ALL OF THEM?
+    queryParams = queryParams.append(
+      'fields',
+      'GpsPoints,Shortname,AccoTypeId,AccoCategory,Altitude,AccoDetail'
+    );
+
     return this.http
       .get<any>(ACCOMMODATION_URL, { observe: 'body', params: queryParams })
       .pipe(
@@ -34,42 +37,27 @@ export class FetchDataService {
                 type: 'Hotel',
                 accType: item?.AccoTypeId,
                 accoCat: item?.AccoCategory?.Id,
-                address: item?.AccoDetail?.en?.Street,
-                city: item?.AccoDetail?.en?.City,
-                website: item?.AccoDetail?.en?.Website,
-                phone: item?.AccoDetail?.en?.Phone,
                 altitude: item?.Altitude,
+                en: {
+                  address: item?.AccoDetail?.en?.Street,
+                  city: item?.AccoDetail?.en?.City,
+                  website: item?.AccoDetail?.en?.Website,
+                  phone: item?.AccoDetail?.en?.Phone,
+                },
+                it: {
+                  address: item?.AccoDetail?.it?.Street,
+                  city: item?.AccoDetail?.it?.City,
+                  website: item?.AccoDetail?.it?.Website,
+                  phone: item?.AccoDetail?.it?.Phone,
+                },
+                de: {
+                  address: item?.AccoDetail?.de?.Street,
+                  city: item?.AccoDetail?.de?.City,
+                  website: item?.AccoDetail?.de?.Website,
+                  phone: item?.AccoDetail?.de?.Phone,
+                },
               };
               accommodations.push(accommodation);
-            }
-          }
-
-          return accommodations;
-        })
-      );
-  }
-
-  getAccommodationsByType(type: number) {
-    let queryParams = new HttpParams();
-    queryParams = queryParams.append('typefilter', type); // HOW TO GET ALL OF THEM?
-    queryParams = queryParams.append('pagesize', 100);
-    return this.http
-      .get<any>(ACCOMMODATION_URL, { observe: 'body', params: queryParams })
-      .pipe(
-        map((resp) => {
-          console.log(resp.Items);
-          let accommodations: any = [];
-
-          for (let item of resp.Items) {
-            if (item.GpsPoints?.position?.Latitude) {
-              accommodations.push({
-                latitude: item.GpsPoints?.position?.Latitude,
-                longitude: item.GpsPoints?.position?.Longitude,
-                name: item.Shortname,
-                accType: item?.AccoTypeId,
-                accoDetail: item?.AccoDetail,
-                all: item,
-              });
             }
           }
 
@@ -118,14 +106,19 @@ export class FetchDataService {
   }
 
   requestStationPlugs(station_id: any): Observable<Plug[]> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append('limit', -1);
+    queryParams = queryParams.append('offset', 0);
+    queryParams = queryParams.append(
+      'where',
+      'sactive.eq.true,pcode.eq.' + station_id
+    );
+    queryParams = queryParams.append('shownull', false);
     return this.http
-      .get<any>(
-        ECHARGING_URL +
-          '/EChargingPlug?limit=-1&offset=0&where=sactive.eq.true,pcode.eq.' +
-          station_id +
-          '&shownull=false',
-        { observe: 'body' }
-      )
+      .get<any>(ECHARGING_URL + '/EChargingPlug', {
+        observe: 'body',
+        params: queryParams,
+      })
       .pipe(
         map((resp) => {
           let plugs: Plug[] = [];

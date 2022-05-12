@@ -1,89 +1,173 @@
-
 <div id="main-container">
+  <mat-progress-spinner
+    *ngIf="loading"
+    mode="indeterminate"
+    diameter="60"
+  ></mat-progress-spinner>
 
-    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="60"></mat-progress-spinner>
-
-    <div id="settings">
-
-        <div>
-            <label id="distance-label" for="distance">Distance to nearest E-charging station</label>
-            <span class="distance-span">0 m </span>
-            <input type="range" id="distance-input" name="distance"
-                min="0" max="10000" [(ngModel)]="distanceTillEChargingStation">
-            <span class="distance-span">10 km</span>
-            <div id ="distance-counter">
-                Distance: <span class="italic">{{distanceTillEChargingStation | distance}}</span>
-            </div>
-        </div>
-
-        <div class="settings-spacing">
-            <mat-form-field appearance="legacy">
-                <mat-label>Accommodation Type</mat-label>
-                <mat-select (selectionChange)="onAccommodationSelectionChange($event.value)" [formControl]="accommodationTypesSelected" multiple>
-                    <mat-option *ngFor="let acc of accommodations" [value]="acc">{{acc}}</mat-option>
-                </mat-select>
-                </mat-form-field>
-        </div>
-
-        <div class="settings-spacing">
-            <mat-form-field id="language-field" appearance="legacy">
-                <mat-label><img [src]="selected.img" width="20px" height="20px"></mat-label>
-                <mat-select [(value)]="selected"  [formControl]="languageSelected">
-                    <mat-option  *ngFor="let lan of languages" [value]="lan"><img [src]="lan.img" width="20px" height="20px"> {{lan.value}}</mat-option>
-                </mat-select>
-                </mat-form-field>
-        </div>
-
-        <div class="settings-spacing" id="settings-button">
-            <button (click)="onFilterApplied()" mat-flat-button color="primary">APPLY</button>
-        </div>
+  <div id="settings">
+    <div>
+      <label id="distance-label" for="distance">{{
+        (translations$ | async).DistanceLabel
+      }}</label>
+      <span class="distance-span">0 m </span>
+      <input
+        type="range"
+        id="distance-input"
+        name="distance"
+        min="0"
+        max="10000"
+        [(ngModel)]="distanceInMeters"
+      />
+      <span class="distance-span">10 km</span>
+      <div id="distance-counter">
+        {{ (translations$ | async).Distance }}:
+        <span class="italic">{{ distanceInMeters | distance }}</span>
+      </div>
     </div>
 
-    <div id="map" class="map"></div>
-
-    <div #banner class="popover">
-        <h3>{{currentAccommodation?.name}}</h3>
-        <h5>Accommodation</h5>
-        <div class="popover-tag-container">
-            <span class="popup-tag accommodation-tag">{{currentAccommodation?.accType}}</span>
-            <span class="popup-tag accommodation-tag">{{currentAccommodation?.accoCat}}</span>
-            <span class="popup-tag accommodation-tag">{{currentAccommodation?.altitude}} m</span>
-        </div>
-        <div><img src="assets/website.svg" width="20px" height="20px"><a [href]="currentAccommodation?.website" target="_blank"> Website</a></div>
-        <div><img src="assets/telephone.svg" width="20px" height="20px">{{currentAccommodation?.phone}}</div>
-        <div><img src="assets/pin.svg" width="20px" height="20px">{{currentAccommodation?.address}}, {{currentAccommodation?.city}}</div>
-
-        <h6 id="stations-nearby-title">Stations nearby</h6>
-        <tr *ngFor="let station of nearbyStations">
-            <td>{{station.station.item.name}} <span class="italic">({{station.distance | distance}} away)</span></td>
-        </tr>
+    <div class="settings-spacing">
+      <mat-form-field appearance="legacy">
+        <mat-label>{{ (translations$ | async).AccommodationType }}</mat-label>
+        <mat-select
+          (selectionChange)="onAccommodationSelectionChange($event.value)"
+          [formControl]="accommodationTypesSelected"
+          multiple
+        >
+          <mat-option *ngFor="let acc of accommodations" [value]="acc">{{
+            acc
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
-    <div #ebanner class="popover">
-        <h3>{{currentEStation?.name}}</h3>
-        <h5>{{currentEStation?.type}}</h5>
-        <div class="popover-tag-container">
-            <span class="popup-tag echarger-tag">{{currentEStation?.accessType}}</span>
-            <span class="popup-tag echarger-tag">{{currentEStation?.reservable ? 'Reservable' : 'Not Reservable'}}</span>
-            <span class="popup-tag echarger-tag">{{currentEStation?.capacity}} {{currentEStation?.capacity == '1' ? 'outlet' : 'outlets'}}</span>
-        </div>
-        <div><img src="assets/cash.svg" width="20px" height="20px"><a [href]="currentEStation?.paymentInfo" target="_blank"> Payment Info</a></div>
-
-        <div><img src="assets/pin.svg" width="20px" height="20px">{{currentEStation?.address}}</div>
-        <p>{{currentEStation?.city}}</p>
-    
-        <div *ngIf="plugInfo">
-            <div *ngFor="let plug of plugInfo">
-                <div class="station-nearby">
-                    <div class="bold">{{plug.id}}. {{plug.outletTypeCode}}</div>
-                    <div> Max Power: {{plug.maxPower}} kWh, Current: {{plug.minCurrent}} - {{plug.maxCurrent}} A</div>
-                </div>
-            </div>
-        </div>
+    <div class="settings-spacing">
+      <mat-form-field id="language-field" appearance="legacy">
+        <mat-label
+          ><img [src]="selected.img" width="20px" height="20px"
+        /></mat-label>
+        <mat-select
+          [(value)]="selected"
+          [formControl]="languageSelected"
+          (selectionChange)="switchLang($event.value.value)"
+        >
+          <mat-option *ngFor="let lan of languages" [value]="lan"
+            ><img [src]="lan.img" width="20px" height="20px" />
+            {{ lan.value }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
     </div>
 
+    <div class="settings-spacing" id="settings-button">
+      <button (click)="onFilterApplied()" mat-flat-button color="primary">
+        {{ (translations$ | async).Apply }}
+      </button>
+    </div>
+  </div>
+
+  <div id="map" class="map"></div>
+
+  <div #banner class="popover">
+    <h3>{{ currentAccommodation?.name }}</h3>
+    <h5>{{ (translations$ | async).Accommodation }}</h5>
+    <div class="popover-tag-container">
+      <span class="popup-tag accommodation-tag">{{
+        currentAccommodation?.accType
+      }}</span>
+      <span class="popup-tag accommodation-tag">{{
+        currentAccommodation?.accoCat
+      }}</span>
+      <span class="popup-tag accommodation-tag"
+        >{{ currentAccommodation?.altitude }} m</span
+      >
+    </div>
+    <div>
+      <img src="assets/website.svg" width="20px" height="20px" /><a
+        [href]="(currentAccommodationDetails$ | async)?.website"
+        target="_blank"
+      >
+        {{ (translations$ | async).Website }}</a
+      >
+    </div>
+    <div>
+      <img src="assets/telephone.svg" width="20px" height="20px" />{{
+        (currentAccommodationDetails$ | async)?.phone
+      }}
+    </div>
+    <div>
+      <img src="assets/pin.svg" width="20px" height="20px" />{{
+        (currentAccommodationDetails$ | async)?.address
+      }}, 
+      {{ 
+        (currentAccommodationDetails$ | async)?.city
+       }}
+    </div>
+
+    <h6 id="stations-nearby-title">
+      {{ (translations$ | async).StationsNearby }}
+    </h6>
+    <tr *ngFor="let station of nearbyStations">
+      <td>
+        {{ station.station.item.name }}
+        <span class="italic"
+          >({{ station.distance | distance }}
+          {{ (translations$ | async).Away }})</span
+        >
+      </td>
+    </tr>
+  </div>
+
+  <div #ebanner class="popover">
+    <h3>{{ currentEStation?.name }}</h3>
+    <h5>{{ currentEStation?.type }}</h5>
+    <div class="popover-tag-container">
+      <span class="popup-tag echarger-tag">{{
+        currentEStation?.accessType
+      }}</span>
+      <span class="popup-tag echarger-tag"
+        >{{
+          currentEStation?.reservable
+            ? (translations$ | async).Reservable
+            : (translations$ | async).NotReservable
+        }}</span
+      >
+      <span class="popup-tag echarger-tag"
+        >{{ currentEStation?.capacity }}
+        {{
+          currentEStation?.capacity == "1"
+            ? (translations$ | async).Outlet
+            : (translations$ | async).Outlets
+        }}</span
+      >
+    </div>
+    <div>
+      <img src="assets/cash.svg" width="20px" height="20px" /><a
+        [href]="currentEStation?.paymentInfo"
+        target="_blank"
+      >
+        {{ (translations$ | async).PaymentInfo }}</a
+      >
+    </div>
+
+    <div>
+      <img src="assets/pin.svg" width="20px" height="20px" />{{
+        currentEStation?.address
+      }}
+    </div>
+    <p>{{ currentEStation?.city }}</p>
+
+    <div *ngIf="plugInfo">
+      <div *ngFor="let plug of plugInfo">
+        <div class="station-nearby">
+          <div class="bold">{{ plug.id }}. {{ plug.outletTypeCode }}</div>
+          <div>
+            {{ (translations$ | async).MaxPower }}: {{ plug.maxPower }} kWh,
+            {{ (translations$ | async).Current }}: {{ plug.minCurrent }} -
+            {{ plug.maxCurrent }} A
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-
-

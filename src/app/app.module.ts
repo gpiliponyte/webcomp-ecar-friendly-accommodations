@@ -6,22 +6,18 @@ import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { ElementComponent } from './element/element.component';
 import { FetchDataService } from './services/fetch-data.service';
-import { DistancePipe } from './services/types';
-import {MatSelectModule} from '@angular/material/select';
+import { DistancePipe, TranslatePropertyPipe } from './services/types';
+import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material/button';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ElementComponent,
-    DistancePipe
-  ],
+  declarations: [AppComponent, ElementComponent, DistancePipe, TranslatePropertyPipe],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -30,19 +26,18 @@ import {HttpClientModule} from '@angular/common/http';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatProgressSpinnerModule,
+    MatProgressSpinnerModule
   ],
   providers: [FetchDataService],
   bootstrap: [environment.element ? [] : AppComponent],
-  entryComponents: [AppComponent]
+  entryComponents: [AppComponent],
 })
-export class AppModule implements DoBootstrap { 
+export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {}
   ngDoBootstrap(appRef: ApplicationRef): void {
     const el = createCustomElement(AppComponent, {
-      injector: this.injector
+      injector: this.injector,
     });
-    customElements.define('hotel-picker', el)
+    customElements.define('hotel-picker', el);
   }
 }
-
