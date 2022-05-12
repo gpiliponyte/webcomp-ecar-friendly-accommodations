@@ -35,17 +35,10 @@ The web component is visually pleasing, easy to use, brings value to the user, a
 Include the webcompscript file `dist/accommodation.min.js` in your HTML and define the web component like this:
 
 ```html
-<hotel-picker center="[54.012, 23.4567]" language="en"></hotel-picker>
+<hotel-picker language="en"></hotel-picker>
 ```
 
 ### Attributes
-
-#### center
-
-The description of the parameter **center**.
-
-Type: string
-Options: "test", "123"
 
 #### language
 
@@ -53,6 +46,42 @@ The description of the parameter **language**.
 
 Type: string
 Options: "en", "it", "de"
+
+#### longitude
+
+The description of the parameter **longitude**.
+
+Type: float
+
+#### latitude
+
+The description of the parameter **latitude**.
+
+Type: float
+
+#### distance-in-meters
+
+The description of the parameter **distance-in-meters**.
+
+Type: int
+
+#### zoom
+
+The description of the parameter **zoom**.
+
+Type: int
+
+#### min-zoom
+
+The description of the parameter **min-zoom**.
+
+Type: int
+
+#### max-zoom
+
+The description of the parameter **max-zoom**.
+
+Type: int
 
 ## Getting started
 
