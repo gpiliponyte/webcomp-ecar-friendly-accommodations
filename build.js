@@ -12,8 +12,4 @@ const concat = require('concat');
   await fs.remove('./dist/runtime.js')
   await fs.remove('./dist/polyfills.js')
   await fs.remove('./dist/main.js')
-  // await fs.copyFile(
-  //   './dist/accommodation-finder/styles.css',
-  //   'elements/styles.css'
-  // );
 })();

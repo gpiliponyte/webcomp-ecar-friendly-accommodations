@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Accommodation, EChargingStation, Plug } from './types';
+import { Accommodation, EChargingStation, Plug } from '../util/types';
 
 const ACCOMMODATION_URL =
   'https://api.tourism.testingmachine.eu/v1/Accommodation';

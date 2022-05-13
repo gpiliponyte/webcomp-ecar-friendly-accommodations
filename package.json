@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "build-el": "ng build --configuration element --output-hashing none && node elements-build.js"
+    "build-el": "ng build --configuration element --output-hashing none && node build.js"
   },
   "private": true,
   "dependencies": {

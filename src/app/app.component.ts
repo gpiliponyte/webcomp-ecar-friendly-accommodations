@@ -25,9 +25,9 @@ import {
   COLOR,
   compare,
   EChargingStation,
-} from './services/types';
+} from './util/types';
 import { FormControl } from '@angular/forms';
-import { TRANSLATIONS } from './services/translations';
+import { TRANSLATIONS } from './util/translations';
 import { Observable, of } from 'rxjs';
 
 enum Languages {

@@ -4,9 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
-import { ElementComponent } from './element/element.component';
 import { FetchDataService } from './services/fetch-data.service';
-import { DistancePipe, TranslatePropertyPipe } from './services/types';
+import { DistancePipe, TranslatePropertyPipe } from './util/types';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +16,6 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    ElementComponent,
     DistancePipe,
     TranslatePropertyPipe,
   ],
