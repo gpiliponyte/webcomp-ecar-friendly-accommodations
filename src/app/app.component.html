@@ -98,10 +98,8 @@
     <div>
       <img src="assets/pin.svg" width="20px" height="20px" />{{
         (currentAccommodationDetails$ | async)?.address
-      }}, 
-      {{ 
-        (currentAccommodationDetails$ | async)?.city
-       }}
+      }},
+      {{ (currentAccommodationDetails$ | async)?.city }}
     </div>
 
     <h6 id="stations-nearby-title">
@@ -125,13 +123,11 @@
       <span class="popup-tag echarger-tag">{{
         currentEStation?.accessType
       }}</span>
-      <span class="popup-tag echarger-tag"
-        >{{
-          currentEStation?.reservable
-            ? (translations$ | async).Reservable
-            : (translations$ | async).NotReservable
-        }}</span
-      >
+      <span class="popup-tag echarger-tag">{{
+        currentEStation?.reservable
+          ? (translations$ | async).Reservable
+          : (translations$ | async).NotReservable
+      }}</span>
       <span class="popup-tag echarger-tag"
         >{{ currentEStation?.capacity }}
         {{

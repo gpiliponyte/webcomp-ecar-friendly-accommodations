@@ -43,10 +43,6 @@ export interface Accommodation {
   de: AccommodationDetails;
 }
 
-// address: item?.AccoDetail?.en?.Street,
-// city: item?.AccoDetail?.en?.City,
-// website: item?.AccoDetail?.en?.Website,
-// phone: item?.AccoDetail?.en?.Phone,
 export interface Plug {
   id: number;
   outletTypeCode: string;
@@ -56,8 +52,8 @@ export interface Plug {
 }
 
 export enum COLOR {
-  ACCOMMODATION = '#3f51b5', //'#3399CC',
-  ECHARGER = '#8acd32', //'#32CD32'
+  ACCOMMODATION = '#3f51b5',
+  ECHARGER = '#8acd32',
 }
 
 import { Pipe, PipeTransform } from '@angular/core';

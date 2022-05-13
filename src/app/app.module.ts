@@ -14,10 +14,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { HttpClientModule } from '@angular/common/http';
 
-
-
 @NgModule({
-  declarations: [AppComponent, ElementComponent, DistancePipe, TranslatePropertyPipe],
+  declarations: [
+    AppComponent,
+    ElementComponent,
+    DistancePipe,
+    TranslatePropertyPipe,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -26,7 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   providers: [FetchDataService],
   bootstrap: [environment.element ? [] : AppComponent],
