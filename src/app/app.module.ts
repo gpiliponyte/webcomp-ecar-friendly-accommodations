@@ -41,6 +41,6 @@ export class AppModule implements DoBootstrap {
     const el = createCustomElement(AppComponent, {
       injector: this.injector,
     });
-    customElements.define('hotel-picker', el);
+    customElements.define('webcomp-ecar-friendly-accommodations', el);
   }
 }

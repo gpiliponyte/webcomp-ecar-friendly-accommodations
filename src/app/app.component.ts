@@ -149,8 +149,8 @@ export class AppComponent implements OnInit, OnChanges {
                   })
                 : new Icon({
                     opacity: 1,
-                    src: 'assets/my_e_car_pic.svg',
-                    scale: 0.5,
+                    src: 'assets/pin_char.svg',
+                    scale: 0.01,
                   }),
             text: new Text({
               text: size > 1 ? size.toString() : '',
