@@ -1,0 +1,35 @@
+{
+    "title": "ECar-Friendly Accommodation Finder",
+    "description": "ECar-Friendly Accommodation Finder to get accommodations within a specific distance from a charging station",
+    "descriptionAbstract": "Widget to display Open Data Hub Mobility and Accommodation Information",
+    "license": "AGPL-3.0-or-later",
+    "repositoryUrl": "https://github.com/gpiliponyte/ECarFriendlyAccommodation.git",
+    "copyrightHolders": [
+      {
+        "name": "NOI",
+        "email": "info@noi.bz.it",
+        "organization": "NOI S.p.A",
+        "organizationUrl": "https://noi.bz.it"
+      }
+    ],
+    "authors": [
+      {
+        "name": "Greta Piliponyte",
+        "email": "g.piliponyte@gmail.com",
+        "organization": "Free University of Bozen / Bolzano",
+        "organizationUrl": "https://www.unibz.it/"
+      }
+    ],
+    "image": null,
+    "searchTags": [],
+    "dist": {
+      "basePath": "dist",
+      "files": [
+        "accommodation.min.js"
+      ]
+    },
+    "configuration": {
+      "tagName": "hotel-picker",
+      "options": []
+    }
+  }
