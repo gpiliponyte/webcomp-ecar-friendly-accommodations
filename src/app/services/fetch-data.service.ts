@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Accommodation, EChargingStation, Plug } from '../util/types';
 
@@ -15,7 +15,7 @@ export class FetchDataService {
 
   getAccommodations(): Observable<Accommodation[]> {
     let queryParams = new HttpParams();
-    queryParams = queryParams.append('pagesize', 100); // HOW TO GET ALL OF THEM?
+    queryParams = queryParams.append('pagesize', 10000); // HOW TO GET ALL OF THEM?
     queryParams = queryParams.append(
       'fields',
       'GpsPoints,Shortname,AccoTypeId,AccoCategory,Altitude,AccoDetail'
@@ -70,7 +70,10 @@ export class FetchDataService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append('limit', -1);
     queryParams = queryParams.append('distinct', true);
-    queryParams = queryParams.append('where', 'sactive.eq.true');
+    // queryParams = queryParams.append('where', 'sactive.eq.true');
+    queryParams = queryParams.append('where', 'sactive.eq.true,scoordinate.bbi.(11,46,12,47,4326)');
+
+    // 46.21977 10.38180 47.09215 12.47797
     return this.http
       .get<any>(ECHARGING_URL + '/EChargingStation', {
         observe: 'body',
@@ -103,6 +106,79 @@ export class FetchDataService {
           return chargingStations;
         })
       );
+  }
+
+  sparkql(): Observable<Accommodation[]> {
+    let headers: HttpHeaders = new HttpHeaders({
+      'Content-type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json'
+    });
+    
+    let searchQuery = `
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX schema: <http://schema.org/>
+    PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+    PREFIX : <http://noi.example.org/ontology/odh#>
+    
+    
+    
+      SELECT ("Hotel" as ?type) ?nameDe ?nameIt ?nameEn ?altitude ?longitude ?latitude
+      WHERE {
+       ?h a schema:LodgingBusiness ;   
+            schema:name ?nameDe ;    
+            schema:name ?nameIt ; 
+            schema:name ?nameEn ; 
+            schema:geo/schema:elevation ?altitude ;
+            schema:geo/schema:longitude ?longitude ;
+            schema:geo/schema:longitude ?latitude .
+    
+       FILTER (lang(?nameDe) = 'de')
+       FILTER (lang(?nameIt) = 'it')
+       FILTER (lang(?nameEn) = 'en')
+      }
+    `
+
+    let params = new HttpParams();
+    params = params.append('query', searchQuery);
+    params = params.append('format', 'json');
+
+
+    return this.http.get('https://sparql.opendatahub.bz.it/portal/sparql', {params, headers}).pipe(map((resp: any) => {
+      console.log(resp.results.bindings)
+          let accommodations: Accommodation[] = [];
+
+          for (let item of resp.results.bindings) {
+              let accommodation: Accommodation = {
+                latitude: item.latitude,
+                longitude: item.longitude,
+                name: item.nameDe,
+                type: 'Hotel',
+                accType: item.type,
+                accoCat: "accoCat",
+                altitude: item.altitude,
+                en: {
+                  address: "street",
+                  city: "city",
+                  website: "website",
+                  phone: "phone"
+                },
+                it: {
+                  address: "street",
+                  city: "city",
+                  website: "website",
+                  phone: "phone"
+                },
+                de: {
+                  address: "street",
+                  city: "city",
+                  website: "website",
+                  phone: "phone"
+                },
+              };
+              accommodations.push(accommodation);
+            }
+          return accommodations
+    }))
   }
 
   requestStationPlugs(station_id: any): Observable<Plug[]> {

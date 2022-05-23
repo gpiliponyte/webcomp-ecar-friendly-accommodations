@@ -176,14 +176,6 @@ export class AppComponent implements OnInit, OnChanges {
     if ('language' in changes) {
       this.translations$ = of(TRANSLATIONS[this.language]);
     }
-
-    // @Input() language: Languages = Languages.en;
-    // @Input() longitude = 11.3548
-    // @Input() latitude =  46.4983
-    // @Input() distanceInMeters = 1500
-    // @Input() zoom = 10
-    // @Input() minZoom = 8
-    // @Input() maxZoom = 20
   }
 
   ngOnInit(): void {
@@ -226,8 +218,10 @@ export class AppComponent implements OnInit, OnChanges {
 
       this.addLayer(COLOR.ECHARGER, features);
 
-      this.fetchDataService.getAccommodations().subscribe((items) => {
+      this.fetchDataService.sparkql().subscribe((items) => {
         let features = [];
+        console.time("answer time");
+        // console.timeLog("answer time");
 
         for (let item of items) {
           let point = new Point(fromLonLat([item.longitude, item.latitude]));
@@ -255,6 +249,8 @@ export class AppComponent implements OnInit, OnChanges {
 
           features.push(feature);
         }
+
+        console.timeEnd("answer time");
 
         this.accommodationFeatures = features;
 
