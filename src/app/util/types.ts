@@ -8,6 +8,13 @@ export enum AccommodationType {
   Apartment = 'Apartment',
 }
 
+export enum AccommodationNewType {
+  Hotel = 'Hotel',
+  BedAndBreakfast = 'BedAndBreakfast',
+  Hostel = 'Hostel',
+  Campground = 'Campground'
+}
+
 export interface EChargingStation {
   id: string;
   latitude: number;

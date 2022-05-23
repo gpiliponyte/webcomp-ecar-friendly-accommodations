@@ -70,10 +70,8 @@ export class FetchDataService {
     let queryParams = new HttpParams();
     queryParams = queryParams.append('limit', -1);
     queryParams = queryParams.append('distinct', true);
-    // queryParams = queryParams.append('where', 'sactive.eq.true');
-    queryParams = queryParams.append('where', 'sactive.eq.true,scoordinate.bbi.(11,46,12,47,4326)');
+    queryParams = queryParams.append('where', 'sactive.eq.true,scoordinate.bbi.(10.38180,46.21977,12.47797,47.09215,4326)');
 
-    // 46.21977 10.38180 47.09215 12.47797
     return this.http
       .get<any>(ECHARGING_URL + '/EChargingStation', {
         observe: 'body',
@@ -130,7 +128,7 @@ export class FetchDataService {
             schema:name ?nameEn ; 
             schema:geo/schema:elevation ?altitude ;
             schema:geo/schema:longitude ?longitude ;
-            schema:geo/schema:longitude ?latitude .
+            schema:geo/schema:latitude ?latitude .
     
        FILTER (lang(?nameDe) = 'de')
        FILTER (lang(?nameIt) = 'it')
@@ -149,13 +147,13 @@ export class FetchDataService {
 
           for (let item of resp.results.bindings) {
               let accommodation: Accommodation = {
-                latitude: item.latitude,
-                longitude: item.longitude,
-                name: item.nameDe,
+                latitude: item.latitude.value,
+                longitude: item.longitude.value,
+                name: item.nameDe.value,
                 type: 'Hotel',
-                accType: item.type,
+                accType: item.type.value,
                 accoCat: "accoCat",
-                altitude: item.altitude,
+                altitude: item.altitude.value,
                 en: {
                   address: "street",
                   city: "city",

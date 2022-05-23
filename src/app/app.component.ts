@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnChanges {
   @Input() latitude = 46.4983;
   @Input() distanceInMeters = 1500;
   @Input() zoom = 10;
-  @Input() minZoom = 8;
+  @Input() minZoom = 1//8;
   @Input() maxZoom = 20;
 
   translations$: Observable<any> = of(TRANSLATIONS[this.language]);
@@ -80,6 +80,13 @@ export class AppComponent implements OnInit, OnChanges {
     'Mountain',
     'Apartment',
     'Not defined',
+  ];
+
+  accommodationsNew: string[] = [
+    'BedAndBreakfast',
+    'Hotel',
+    'Hostel',
+    'Campground'
   ];
 
   // LANGUAGE SELECTBOX
@@ -106,16 +113,12 @@ export class AppComponent implements OnInit, OnChanges {
       this.map.removeLayer(layer);
     }
 
-    console.log(this.selectedAccommodations);
-    console.log(this.accommodationFeatures[0].get('info').accType);
-
     //@ts-ignore
     let featuresSelected = this.accommodationFeatures.filter((el) =>
         this.selectedAccommodations.includes(el.get('info').accType) &&
         el.get('distances')[0].distance < this.distanceInMeters
     );
 
-    console.log(featuresSelected);
     this.addLayer(COLOR.ACCOMMODATION, featuresSelected);
   }
 
