@@ -22,6 +22,7 @@ import { FetchDataService } from './services/fetch-data.service';
 import {
   Accommodation,
   AccommodationDetails,
+  AccommodationNewType,
   COLOR,
   compare,
   EChargingStation,
@@ -82,21 +83,13 @@ export class AppComponent implements OnInit, OnChanges {
     'Not defined',
   ];
 
-  accommodationsNew: string[] = [
-    'BedAndBreakfast',
-    'Hotel',
-    'Hostel',
-    'Campground'
-  ];
+  accommodationsNew: AccommodationNewType[] = Object.values(AccommodationNewType)
 
   // LANGUAGE SELECTBOX
   languageSelected = new FormControl();
-  selected = { value: 'en', img: 'assets/flag_en.svg' };
-  languages: any[] = [
-    { value: 'en', img: 'assets/flag_en.svg' },
-    { value: 'it', img: 'assets/flag_it.svg' },
-    { value: 'de', img: 'assets/flag_de.svg' },
-  ];
+  selected = { value: this.language, img: `assets/flag_${this.language}.svg` };
+  languages: any[] = Object.values(Languages).map((lan) => { return { value: lan, img: `assets/flag_${lan}.svg`}})
+
 
   constructor(private fetchDataService: FetchDataService) {}
 
