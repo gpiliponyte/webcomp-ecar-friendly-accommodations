@@ -23,6 +23,7 @@ import {
   Accommodation,
   AccommodationDetails,
   AccommodationNewType,
+  AccommodationType,
   COLOR,
   compare,
   EChargingStation,
@@ -72,16 +73,7 @@ export class AppComponent implements OnInit, OnChanges {
   // ACCOMMODATION TYPE SELECTBOX
   accommodationTypesSelected = new FormControl();
   selectedAccommodations: any = [];
-  accommodations: string[] = [
-    "BedBreakfast",
-    "HotelPension",
-    "Farm",
-    "Camping",
-    "Youth",
-    "Mountain",
-    "Apartment",
-    "Not defined",
-  ];
+  accommodations: string[] = Object.values(AccommodationType);
 
   accommodationsNew: AccommodationNewType[] =
     Object.values(AccommodationNewType);
@@ -221,7 +213,7 @@ export class AppComponent implements OnInit, OnChanges {
 
       this.addLayer(COLOR.ECHARGER, features);
 
-      this.fetchDataService.sparkql().subscribe((items) => {
+      this.fetchDataService.getAccommodations().subscribe((items) => {
         let features = [];
         console.time("answer time");
 
