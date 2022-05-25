@@ -6,7 +6,38 @@
   ></mat-progress-spinner>
 
   <div id="settings">
-    <div>
+
+    <div class="settings-spacing-auto">
+      <mat-form-field id="language-field" appearance="legacy">
+        <mat-label><img [src]="selected.img" class="icon" /></mat-label>
+        <mat-select
+          [(value)]="selected"
+          [formControl]="languageSelected"
+          (selectionChange)="switchLang($event.value.value)"
+        >
+          <mat-option *ngFor="let lan of languages" [value]="lan"
+            ><img [src]="lan.img" class="icon" /> {{ lan.value }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="settings-spacing-auto">
+      <mat-form-field appearance="legacy">
+        <mat-label>{{ (translations$ | async).AccommodationType }}</mat-label>
+        <mat-select
+          (selectionChange)="onAccommodationSelectionChange($event.value)"
+          [formControl]="accommodationTypesSelected"
+          multiple
+        >
+          <mat-option *ngFor="let acc of accommodations" [value]="acc">{{
+            acc
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="settings-spacing-auto">
       <label id="distance-label" for="distance">{{
         (translations$ | async).DistanceLabel
       }}</label>
@@ -26,37 +57,7 @@
       </div>
     </div>
 
-    <div class="settings-spacing">
-      <mat-form-field appearance="legacy">
-        <mat-label>{{ (translations$ | async).AccommodationType }}</mat-label>
-        <mat-select
-          (selectionChange)="onAccommodationSelectionChange($event.value)"
-          [formControl]="accommodationTypesSelected"
-          multiple
-        >
-          <mat-option *ngFor="let acc of accommodations" [value]="acc">{{
-            acc
-          }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="settings-spacing">
-      <mat-form-field id="language-field" appearance="legacy">
-        <mat-label><img [src]="selected.img" class="icon" /></mat-label>
-        <mat-select
-          [(value)]="selected"
-          [formControl]="languageSelected"
-          (selectionChange)="switchLang($event.value.value)"
-        >
-          <mat-option *ngFor="let lan of languages" [value]="lan"
-            ><img [src]="lan.img" class="icon" /> {{ lan.value }}</mat-option
-          >
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="settings-spacing" id="settings-button">
+    <div class="settings-spacing-auto" id="settings-button">
       <button (click)="onFilterApplied()" mat-flat-button color="primary">
         {{ (translations$ | async).Apply }}
       </button>
@@ -114,14 +115,13 @@
             class="station-nearby-item"
             *ngFor="let station of nearbyStations"
           >
-            <span
-              >{{ station.station.item.name }}
-              <span class="italic"
-                >({{ station.distance | distance }}
-                {{ (translations$ | async).Away }})</span
-              ></span
-            >
-          </li>
+            <span style="font-weight: 400;"
+              >{{ station.station.item.name }} </span>
+
+                (<span class="italic">{{ station.distance | distance }}
+                {{ (translations$ | async).Away }}</span>,
+                <div class="station_coordinates"><img class="icon" src="assets/pin.svg"> ({{ station.station.item.longitude }}; {{ station.station.item.latitude }})</div> )
+        </li>
         </ul>
       </div>
     </div>

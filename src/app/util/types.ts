@@ -15,6 +15,12 @@ export enum AccommodationNewType {
   Campground = 'Campground'
 }
 
+export enum Languages {
+  en = "en",
+  it = "it",
+  de = "de",
+}
+
 export interface EChargingStation {
   id: string;
   latitude: number;

@@ -10,7 +10,8 @@
   padding: 10px;
   width: 300px;
   border: 0.1px solid #808080;
-  overflow-y: scroll;
+  overflow-y: auto;
+  color: #444444;
 }
 
 input {
@@ -26,16 +27,16 @@ input {
   display: flex;
   flex-direction: row;
   background: white;
-  position: absolute;
-  top: 0;
-  z-index: 2;
   width: -webkit-fill-available;
+  flex-wrap: wrap;
+  color: #777777
 }
 
 #distance-label {
   display: block;
-  font-weight: 500;
-  margin-left: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  text-align: center;
 }
 
 .distance-span {
@@ -56,21 +57,22 @@ input {
 }
 
 .settings-spacing {
-  margin-left: 30px;
+  margin: auto 0px auto 30px;
 }
 
-#settings-button {
-  margin-top: 10px;
+.settings-spacing-auto {
+  margin: auto
 }
 
 .popup-tag {
   margin-right: 10px;
-  padding: 3px;
+  padding: 6px;
   white-space: nowrap;
   text-transform: lowercase;
   width: fit-content;
   display: inline-block;
   margin-bottom: 10px;
+  border-radius: 2px;
 }
 
 .popup-close-button {
@@ -116,10 +118,11 @@ input {
   background: #8acd32;
   padding: 5px;
   margin: 3px;
+  border-radius: 2px;
 }
 
 .bold {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 #language-field {
@@ -139,10 +142,11 @@ input {
 .button-container-title {
   font-size: 20px;
   font-weight: 500;
+  word-wrap: break-word;
 }
 
 .station-nearby-item {
-  padding-bottom: 5px;
+  margin-bottom: 16px;
 }
 
 .centered {
@@ -157,6 +161,14 @@ input {
   display: flex; 
   flex-direction:column; 
   height: inherit;
+}
+
+.station_coordinates {
+  display: inline-block;
+}
+
+.station-nearby-name {
+  font-weight: 500;
 }
 
 mat-progress-spinner {

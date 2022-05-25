@@ -24,6 +24,7 @@ import {
   AccommodationDetails,
   AccommodationNewType,
   AccommodationType,
+  Languages,
   COLOR,
   compare,
   EChargingStation,
@@ -32,11 +33,6 @@ import { FormControl } from "@angular/forms";
 import { TRANSLATIONS } from "./util/translations";
 import { Observable, of } from "rxjs";
 
-enum Languages {
-  en = "en",
-  it = "it",
-  de = "de",
-}
 
 @Component({
   selector: "app-root",
@@ -165,6 +161,7 @@ export class AppComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any): void {
     if ("language" in changes) {
       this.translations$ = of(TRANSLATIONS[this.language]);
+      this.selected = { value: this.language, img: `assets/flag_${this.language}.svg` };
     }
   }
 
@@ -174,6 +171,7 @@ export class AppComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+
     this.map = new Map({
       layers: [
         new TileLayer({
