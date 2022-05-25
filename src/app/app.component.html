@@ -43,17 +43,14 @@
 
     <div class="settings-spacing">
       <mat-form-field id="language-field" appearance="legacy">
-        <mat-label
-          ><img [src]="selected.img" class="icon"
-        /></mat-label>
+        <mat-label><img [src]="selected.img" class="icon" /></mat-label>
         <mat-select
           [(value)]="selected"
           [formControl]="languageSelected"
           (selectionChange)="switchLang($event.value.value)"
         >
           <mat-option *ngFor="let lan of languages" [value]="lan"
-            ><img [src]="lan.img" class="icon" />
-            {{ lan.value }}</mat-option
+            ><img [src]="lan.img" class="icon" /> {{ lan.value }}</mat-option
           >
         </mat-select>
       </mat-form-field>
@@ -105,17 +102,21 @@
       {{ (currentAccommodationDetails$ | async)?.city }}
     </div>
 
-    <div id="stations-nearby-container">
-      <p id="stations-nearby-title" class="centered">
+    <div class="popover-bottom-container">
+      <p class="button-container-title centered">
         {{ (translations$ | async).StationsNearby }}
       </p>
 
-      <ul>
-        <li class="station-nearby-item" *ngFor="let station of nearbyStations"><span>{{ station.station.item.name }}
-          <span class="italic"
-            >({{ station.distance | distance }}
-            {{ (translations$ | async).Away }})</span
-          ></span></li>
+      <ul id="station-nearby-list">
+        <li class="station-nearby-item" *ngFor="let station of nearbyStations">
+          <span
+            >{{ station.station.item.name }}
+            <span class="italic"
+              >({{ station.distance | distance }}
+              {{ (translations$ | async).Away }})</span
+            ></span
+          >
+        </li>
       </ul>
     </div>
   </div>
@@ -124,9 +125,9 @@
     <button class="popup-close-button" (click)="hidePopover()">
       <img class="popup-close-icon" src="assets/close.svg" />
     </button>
-    <h3>{{ currentEStation?.name }}</h3>
-    <h5>{{ currentEStation?.type }}</h5>
-    <div class="popover-tag-container">
+    <p class="popover-name">{{ currentEStation?.name }}</p>
+    <!-- <h5>{{ currentEStation?.type }}</h5> -->
+    <div class="popover-tag-container centered">
       <span class="popup-tag echarger-tag">{{
         currentEStation?.accessType
       }}</span>
@@ -144,7 +145,7 @@
         }}</span
       >
     </div>
-    <div>
+    <div class="centered">
       <img src="assets/cash.svg" class="icon" /><a
         [href]="currentEStation?.paymentInfo"
         target="_blank"
@@ -153,14 +154,16 @@
       >
     </div>
 
-    <div>
-      <img src="assets/pin.svg" class="icon" />{{
-        currentEStation?.address
-      }}
+    <div class="centered">
+      <img src="assets/pin.svg" class="icon" />{{ currentEStation?.address }}
     </div>
-    <p>{{ currentEStation?.city }}</p>
 
-    <div *ngIf="plugInfo">
+    <div class="centered">
+      {{ currentEStation?.city }}
+    </div>
+
+    <div class="popover-bottom-container" *ngIf="plugInfo">
+      <p class="button-container-title centered">Available Plugs ({{plugInfo.length}})</p>
       <div *ngFor="let plug of plugInfo">
         <div class="station-nearby">
           <div class="bold">{{ plug.id }}. {{ plug.outletTypeCode }}</div>
