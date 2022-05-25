@@ -68,6 +68,9 @@ input {
   padding: 3px;
   white-space: nowrap;
   text-transform: lowercase;
+  width: fit-content;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 .popup-close-button {

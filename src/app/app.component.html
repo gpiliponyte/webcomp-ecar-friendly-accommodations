@@ -71,115 +71,124 @@
     </button>
 
     <div class="popover-inner">
-    <p class="popover-name">{{ currentAccommodation?.name }}</p>
+      <p class="popover-name">{{ currentAccommodation?.name }}</p>
 
-    <div class="popover-tag-container centered">
-      <span class="popup-tag accommodation-tag">{{
-        currentAccommodation?.accType
-      }}</span>
-      <span class="popup-tag accommodation-tag">{{
-        currentAccommodation?.accoCat
-      }}</span>
-      <span class="popup-tag accommodation-tag"
-        >{{ currentAccommodation?.altitude }} m</span
-      >
-    </div>
-    <div class="centered">
-      <img src="assets/website.svg" class="icon" /><a
-        [href]="(currentAccommodationDetails$ | async)?.website"
-        target="_blank"
-      >
-        {{ (translations$ | async).Website }}</a
-      >
-    </div>
-    <div class="centered">
-      <img src="assets/telephone.svg" class="icon" />{{
-        (currentAccommodationDetails$ | async)?.phone
-      }}
-    </div>
-    <div class="centered">
-      <img src="assets/pin.svg" class="icon" />{{
-        (currentAccommodationDetails$ | async)?.address
-      }},
-      {{ (currentAccommodationDetails$ | async)?.city }}
-    </div>
+      <div class="popover-tag-container centered">
+        <span class="popup-tag accommodation-tag">{{
+          currentAccommodation?.accType
+        }}</span>
+        <span class="popup-tag accommodation-tag">{{
+          currentAccommodation?.accoCat
+        }}</span>
+        <span class="popup-tag accommodation-tag"
+          >{{ currentAccommodation?.altitude }} m</span
+        >
+      </div>
+      <div class="centered">
+        <img src="assets/website.svg" class="icon" /><a
+          [href]="(currentAccommodationDetails$ | async)?.website"
+          target="_blank"
+        >
+          {{ (translations$ | async).Website }}</a
+        >
+      </div>
+      <div class="centered">
+        <img src="assets/telephone.svg" class="icon" />{{
+          (currentAccommodationDetails$ | async)?.phone
+        }}
+      </div>
+      <div class="centered">
+        <img src="assets/pin.svg" class="icon" />{{
+          (currentAccommodationDetails$ | async)?.address
+        }},
+        {{ (currentAccommodationDetails$ | async)?.city }}
+      </div>
 
-    <div class="popover-bottom-container">
-      <p class="button-container-title centered">
-        {{ (translations$ | async).StationsNearby }}
-      </p>
+      <div class="popover-bottom-container">
+        <p class="button-container-title centered">
+          {{ (translations$ | async).StationsNearby }}
+        </p>
 
-      <ul id="station-nearby-list">
-        <li class="station-nearby-item" *ngFor="let station of nearbyStations">
-          <span
-            >{{ station.station.item.name }}
-            <span class="italic"
-              >({{ station.distance | distance }}
-              {{ (translations$ | async).Away }})</span
-            ></span
+        <ul id="station-nearby-list">
+          <li
+            class="station-nearby-item"
+            *ngFor="let station of nearbyStations"
           >
-        </li>
-      </ul>
+            <span
+              >{{ station.station.item.name }}
+              <span class="italic"
+                >({{ station.distance | distance }}
+                {{ (translations$ | async).Away }})</span
+              ></span
+            >
+          </li>
+        </ul>
+      </div>
     </div>
-  </div></div>
+  </div>
 
   <div #ebanner class="popover">
-
     <button class="popup-close-button" (click)="hidePopover()">
       <img class="popup-close-icon" src="assets/close.svg" />
     </button>
 
     <div class="popover-inner">
-    
-    <p class="popover-name">{{ currentEStation?.name }}</p>
- 
-    <div class="popover-tag-container centered">
-      <span class="popup-tag echarger-tag">{{
-        currentEStation?.accessType
-      }}</span>
-      <span class="popup-tag echarger-tag">{{
-        currentEStation?.reservable
-          ? (translations$ | async).Reservable
-          : (translations$ | async).NotReservable
-      }}</span>
-      <span class="popup-tag echarger-tag"
-        >{{ currentEStation?.capacity }}
-        {{
-          currentEStation?.capacity == "1"
-            ? (translations$ | async).Outlet
-            : (translations$ | async).Outlets
-        }}</span
-      >
-    </div>
-    <div class="centered">
-      <img src="assets/cash.svg" class="icon" /><a
-        [href]="currentEStation?.paymentInfo"
-        target="_blank"
-      >
-        {{ (translations$ | async).PaymentInfo }}</a
-      >
-    </div>
+      <p class="popover-name">{{ currentEStation?.name }}</p>
 
-    <div class="centered">
-      <img src="assets/pin.svg" class="icon" />{{ currentEStation?.address }}
-    </div>
+      <div class="popover-tag-container centered">
+        <div class="popup-tag echarger-tag">{{
+          currentEStation?.accessType
+        }}</div>
+        <div class="popup-tag echarger-tag">{{
+          currentEStation?.reservable
+            ? (translations$ | async).Reservable
+            : (translations$ | async).NotReservable
+        }}</div>
+        <div class="popup-tag echarger-tag"
+          >{{ currentEStation?.capacity }}
+          {{
+            currentEStation?.capacity == "1"
+              ? (translations$ | async).Outlet
+              : (translations$ | async).Outlets
+          }}</div
+        >
+      </div>
+      <div class="centered">
+        <img src="assets/cash.svg" class="icon" /><a
+          [href]="currentEStation?.paymentInfo"
+          target="_blank"
+        >
+          {{ (translations$ | async).PaymentInfo }}</a
+        >
+      </div>
 
-    <div class="centered">
-      {{ currentEStation?.city }}
-    </div>
+      <div class="centered">
+        <img src="assets/pin.svg" class="icon" />{{ currentEStation?.address }}
+      </div>
 
-    <div style = "margin-top: auto;" class="popover-bottom-container" *ngIf="plugInfo">
-      <p class="button-container-title centered">{{ (translations$ | async).AvailablePlugs }} ({{plugInfo.length}})</p>
-      <div *ngFor="let plug of plugInfo">
-        <div class="station-nearby">
-          <div class="bold">{{ plug.id }}. {{ plug.outletTypeCode }}</div>
-          <div>
-            {{ (translations$ | async).MaxPower }}: {{ plug.maxPower }} kWh,
-            {{ (translations$ | async).Current }}: {{ plug.minCurrent }} -
-            {{ plug.maxCurrent }} A
+      <div class="centered">
+        {{ currentEStation?.city }}
+      </div>
+
+      <div
+        style="margin-top: auto"
+        class="popover-bottom-container"
+        *ngIf="plugInfo"
+      >
+        <p class="button-container-title centered">
+          {{ (translations$ | async).AvailablePlugs }} ({{ plugInfo.length }})
+        </p>
+        <div *ngFor="let plug of plugInfo">
+          <div class="station-nearby">
+            <div class="bold">{{ plug.id }}. {{ plug.outletTypeCode }}</div>
+            <div>
+              {{ (translations$ | async).MaxPower }}: {{ plug.maxPower }} kWh,
+              {{ (translations$ | async).Current }}: {{ plug.minCurrent }} -
+              {{ plug.maxCurrent }} A
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div></div>
+  </div>
 </div>
