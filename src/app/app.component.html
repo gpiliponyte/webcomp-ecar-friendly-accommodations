@@ -44,7 +44,7 @@
     <div class="settings-spacing">
       <mat-form-field id="language-field" appearance="legacy">
         <mat-label
-          ><img [src]="selected.img" width="20px" height="20px"
+          ><img [src]="selected.img" class="icon"
         /></mat-label>
         <mat-select
           [(value)]="selected"
@@ -52,7 +52,7 @@
           (selectionChange)="switchLang($event.value.value)"
         >
           <mat-option *ngFor="let lan of languages" [value]="lan"
-            ><img [src]="lan.img" width="20px" height="20px" />
+            ><img [src]="lan.img" class="icon" />
             {{ lan.value }}</mat-option
           >
         </mat-select>
@@ -69,10 +69,12 @@
   <div id="map" class="map"></div>
 
   <div #banner class="popover">
-    <button class="popup-close-button" (click)="onPopoverClose()"> <img class="popup-close-icon" src="assets/close.svg"></button>
-    <h3>{{ currentAccommodation?.name }}</h3>
-    <h5>{{ (translations$ | async).Accommodation }}</h5>
-    <div class="popover-tag-container">
+    <button class="popup-close-button" (click)="hidePopover()">
+      <img class="popup-close-icon" src="assets/close.svg" />
+    </button>
+    <p class="popover-name">{{ currentAccommodation?.name }}</p>
+    <!-- <p>{{ (translations$ | async).Accommodation }}</p> -->
+    <div class="popover-tag-container centered">
       <span class="popup-tag accommodation-tag">{{
         currentAccommodation?.accType
       }}</span>
@@ -83,42 +85,45 @@
         >{{ currentAccommodation?.altitude }} m</span
       >
     </div>
-    <div>
-      <img src="assets/website.svg" width="20px" height="20px" /><a
+    <div class="centered">
+      <img src="assets/website.svg" class="icon" /><a
         [href]="(currentAccommodationDetails$ | async)?.website"
         target="_blank"
       >
         {{ (translations$ | async).Website }}</a
       >
     </div>
-    <div>
-      <img src="assets/telephone.svg" width="20px" height="20px" />{{
+    <div class="centered">
+      <img src="assets/telephone.svg" class="icon" />{{
         (currentAccommodationDetails$ | async)?.phone
       }}
     </div>
-    <div>
-      <img src="assets/pin.svg" width="20px" height="20px" />{{
+    <div class="centered">
+      <img src="assets/pin.svg" class="icon" />{{
         (currentAccommodationDetails$ | async)?.address
       }},
       {{ (currentAccommodationDetails$ | async)?.city }}
     </div>
 
-    <h6 id="stations-nearby-title">
-      {{ (translations$ | async).StationsNearby }}
-    </h6>
-    <tr *ngFor="let station of nearbyStations">
-      <td>
-        {{ station.station.item.name }}
-        <span class="italic"
-          >({{ station.distance | distance }}
-          {{ (translations$ | async).Away }})</span
-        >
-      </td>
-    </tr>
+    <div id="stations-nearby-container">
+      <p id="stations-nearby-title" class="centered">
+        {{ (translations$ | async).StationsNearby }}
+      </p>
+
+      <ul>
+        <li class="station-nearby-item" *ngFor="let station of nearbyStations"><span>{{ station.station.item.name }}
+          <span class="italic"
+            >({{ station.distance | distance }}
+            {{ (translations$ | async).Away }})</span
+          ></span></li>
+      </ul>
+    </div>
   </div>
 
   <div #ebanner class="popover">
-    <button class="popup-close-button" (click)="onPopoverClose()"> <img class="popup-close-icon" src="assets/close.svg"></button>
+    <button class="popup-close-button" (click)="hidePopover()">
+      <img class="popup-close-icon" src="assets/close.svg" />
+    </button>
     <h3>{{ currentEStation?.name }}</h3>
     <h5>{{ currentEStation?.type }}</h5>
     <div class="popover-tag-container">
@@ -140,7 +145,7 @@
       >
     </div>
     <div>
-      <img src="assets/cash.svg" width="20px" height="20px" /><a
+      <img src="assets/cash.svg" class="icon" /><a
         [href]="currentEStation?.paymentInfo"
         target="_blank"
       >
@@ -149,7 +154,7 @@
     </div>
 
     <div>
-      <img src="assets/pin.svg" width="20px" height="20px" />{{
+      <img src="assets/pin.svg" class="icon" />{{
         currentEStation?.address
       }}
     </div>

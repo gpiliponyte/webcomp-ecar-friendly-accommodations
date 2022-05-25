@@ -109,8 +109,7 @@ export class AppComponent implements OnInit, OnChanges {
     }
 
     //@ts-ignore
-    let featuresSelected = this.accommodationFeatures.filter(
-      (el) =>
+    let featuresSelected = this.accommodationFeatures.filter((el) =>
         this.selectedAccommodations.includes(el.get("info").accType) &&
         el.get("distances")[0].distance < this.distanceInMeters
     );
@@ -225,7 +224,6 @@ export class AppComponent implements OnInit, OnChanges {
       this.fetchDataService.sparkql().subscribe((items) => {
         let features = [];
         console.time("answer time");
-        // console.timeLog("answer time");
 
         for (let item of items) {
           let point = new Point(fromLonLat([item.longitude, item.latitude]));
@@ -293,7 +291,7 @@ export class AppComponent implements OnInit, OnChanges {
                 containerHeight - settingBarHeight - 50 + "px";
             }
           } else {
-            //{address: el.smetadata.address, accessType: el.smetadata.accessType, capacity: el.smetadata.capacity, city: el.smetadata.city, paymentInfo: el.smetadata.paymentInfo, reservable: el.smetadata.reservable}
+            
             this.fetchDataService
               .requestStationPlugs(object.get("info").scode)
               .subscribe((el) => {
