@@ -15,23 +15,25 @@ export const TRANSLATIONS = {
     PaymentInfo: 'Payment Info',
     MaxPower: 'Max Power',
     Current: 'Current',
+    AvailablePlugs: 'Available Plugs'
   },
   de: {
-    DistanceLabel: 'Entfernung zur E-station',
+    DistanceLabel: 'Entfernung zur nächsten E-station',
     Distance: 'Entfernung',
     AccommodationType: 'Unterkunftsart',
     Apply: 'ANWENDEN',
     Accommodation: 'Unterkunft',
     Website: 'Website',
-    StationsNearby: 'Station in der Nähe',
-    Away: 'auswärts',
+    StationsNearby: 'Stationen in der Nähe',
+    Away: 'entfernt',
     Reservable: 'Reservierbar',
     NotReservable: 'Nicht reservierbar',
-    Outlet: 'Auslass',
-    Outlets: 'Auslassen',
+    Outlet: 'Ladestecker',
+    Outlets: 'Ladestecker',
     PaymentInfo: 'Zahlungsinformationen',
     MaxPower: 'Maximale Leistung',
     Current: 'Strom',
+    AvailablePlugs: 'Verfügbare Ladestecker'
   },
   it: {
     DistanceLabel: 'Distanza dalla e-stazione più vicina',
@@ -49,5 +51,6 @@ export const TRANSLATIONS = {
     PaymentInfo: 'Informazioni sul pagamento',
     MaxPower: 'Potenza massima',
     Current: 'Corrente',
+    AvailablePlugs: 'Spine Disponibili'
   },
 };

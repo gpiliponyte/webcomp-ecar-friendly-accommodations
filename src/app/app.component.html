@@ -163,7 +163,7 @@
     </div>
 
     <div class="popover-bottom-container" *ngIf="plugInfo">
-      <p class="button-container-title centered">Available Plugs ({{plugInfo.length}})</p>
+      <p class="button-container-title centered">{{ (translations$ | async).AvailablePlugs }} ({{plugInfo.length}})</p>
       <div *ngFor="let plug of plugInfo">
         <div class="station-nearby">
           <div class="bold">{{ plug.id }}. {{ plug.outletTypeCode }}</div>
