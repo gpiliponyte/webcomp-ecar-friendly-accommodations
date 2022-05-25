@@ -106,35 +106,59 @@ export class FetchDataService {
       );
   }
 
+  sparkqlHelper(type: string) {
+    return `
+    {
+      SELECT ("${type}" as ?type) ?nameDe ?nameIt ?nameEn ?altitude ?longitude ?latitude
+        WHERE {
+        ?h a schema:${type} ;   
+              schema:name ?nameDe ;    
+              schema:name ?nameIt ; 
+              schema:name ?nameEn ; 
+              schema:geo/schema:elevation ?altitude ;
+              schema:geo/schema:longitude ?longitude ;
+              schema:geo/schema:latitude ?latitude .
+      
+        FILTER (lang(?nameDe) = 'de')
+        FILTER (lang(?nameIt) = 'it')
+        FILTER (lang(?nameEn) = 'en')
+        }
+    }
+    `
+  }
+
   sparkql(): Observable<Accommodation[]> {
     let headers: HttpHeaders = new HttpHeaders({
       'Content-type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json'
     });
-    
+
+    let typesOfAccommodation = ['Hotel', 'Hostel', 'Campground', 'BedAndBreakfast']
+
+    let unionOfQueries = ""
+
+    for(let i = 0; i<typesOfAccommodation.length; i++){
+      unionOfQueries = unionOfQueries + this.sparkqlHelper(typesOfAccommodation[i])
+      if(i < typesOfAccommodation.length -1) {
+        unionOfQueries = unionOfQueries + "\n UNION \n"
+      }
+
+  }
+
     let searchQuery = `
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX schema: <http://schema.org/>
     PREFIX geo: <http://www.opengis.net/ont/geosparql#>
     PREFIX : <http://noi.example.org/ontology/odh#>
-    
-    
-    
-      SELECT ("Hotel" as ?type) ?nameDe ?nameIt ?nameEn ?altitude ?longitude ?latitude
-      WHERE {
-       ?h a schema:LodgingBusiness ;   
-            schema:name ?nameDe ;    
-            schema:name ?nameIt ; 
-            schema:name ?nameEn ; 
-            schema:geo/schema:elevation ?altitude ;
-            schema:geo/schema:longitude ?longitude ;
-            schema:geo/schema:latitude ?latitude .
-    
-       FILTER (lang(?nameDe) = 'de')
-       FILTER (lang(?nameIt) = 'it')
-       FILTER (lang(?nameEn) = 'en')
-      }
+
+    SELECT * WHERE
+    {
+      ${unionOfQueries}
+    }
     `
+
+    console.log(searchQuery)
+
 
     let params = new HttpParams();
     params = params.append('query', searchQuery);

@@ -5,20 +5,20 @@ import {
   OnChanges,
   OnInit,
   ViewChild,
-} from '@angular/core';
-import { Feature } from 'ol';
-import ScaleLine from 'ol/control/ScaleLine';
-import ZoomSlider from 'ol/control/ZoomSlider';
-import { LineString, Point } from 'ol/geom';
-import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
-import Map from 'ol/Map';
-import { fromLonLat, transform } from 'ol/proj';
-import { Cluster, OSM, Vector } from 'ol/source';
-import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
-import View from 'ol/View';
-import { FetchDataService } from './services/fetch-data.service';
+} from "@angular/core";
+import { Feature } from "ol";
+import ScaleLine from "ol/control/ScaleLine";
+import ZoomSlider from "ol/control/ZoomSlider";
+import { LineString, Point } from "ol/geom";
+import TileLayer from "ol/layer/Tile";
+import VectorLayer from "ol/layer/Vector";
+import Map from "ol/Map";
+import { fromLonLat, transform } from "ol/proj";
+import { Cluster, OSM, Vector } from "ol/source";
+import { Fill, Icon, Stroke, Style, Text } from "ol/style";
+import CircleStyle from "ol/style/Circle";
+import View from "ol/View";
+import { FetchDataService } from "./services/fetch-data.service";
 import {
   Accommodation,
   AccommodationDetails,
@@ -26,21 +26,21 @@ import {
   COLOR,
   compare,
   EChargingStation,
-} from './util/types';
-import { FormControl } from '@angular/forms';
-import { TRANSLATIONS } from './util/translations';
-import { Observable, of } from 'rxjs';
+} from "./util/types";
+import { FormControl } from "@angular/forms";
+import { TRANSLATIONS } from "./util/translations";
+import { Observable, of } from "rxjs";
 
 enum Languages {
-  en = 'en',
-  it = 'it',
-  de = 'de',
+  en = "en",
+  it = "it",
+  de = "de",
 }
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit, OnChanges {
   public map!: Map;
@@ -56,15 +56,15 @@ export class AppComponent implements OnInit, OnChanges {
   accommodationFeatures: any = [];
   nearbyStations: any = [];
 
-  @ViewChild('banner') banner!: ElementRef;
-  @ViewChild('ebanner') ebanner!: ElementRef;
+  @ViewChild("banner") banner!: ElementRef;
+  @ViewChild("ebanner") ebanner!: ElementRef;
 
   @Input() language: Languages = Languages.en;
   @Input() longitude = 11.3548;
   @Input() latitude = 46.4983;
   @Input() distanceInMeters = 1500;
   @Input() zoom = 10;
-  @Input() minZoom = 1//8;
+  @Input() minZoom = 1; //8;
   @Input() maxZoom = 20;
 
   translations$: Observable<any> = of(TRANSLATIONS[this.language]);
@@ -73,23 +73,25 @@ export class AppComponent implements OnInit, OnChanges {
   accommodationTypesSelected = new FormControl();
   selectedAccommodations: any = [];
   accommodations: string[] = [
-    'BedBreakfast',
-    'HotelPension',
-    'Farm',
-    'Camping',
-    'Youth',
-    'Mountain',
-    'Apartment',
-    'Not defined',
+    "BedBreakfast",
+    "HotelPension",
+    "Farm",
+    "Camping",
+    "Youth",
+    "Mountain",
+    "Apartment",
+    "Not defined",
   ];
 
-  accommodationsNew: AccommodationNewType[] = Object.values(AccommodationNewType)
+  accommodationsNew: AccommodationNewType[] =
+    Object.values(AccommodationNewType);
 
   // LANGUAGE SELECTBOX
   languageSelected = new FormControl();
   selected = { value: this.language, img: `assets/flag_${this.language}.svg` };
-  languages: any[] = Object.values(Languages).map((lan) => { return { value: lan, img: `assets/flag_${lan}.svg`}})
-
+  languages: any[] = Object.values(Languages).map((lan) => {
+    return { value: lan, img: `assets/flag_${lan}.svg` };
+  });
 
   constructor(private fetchDataService: FetchDataService) {}
 
@@ -107,9 +109,10 @@ export class AppComponent implements OnInit, OnChanges {
     }
 
     //@ts-ignore
-    let featuresSelected = this.accommodationFeatures.filter((el) =>
-        this.selectedAccommodations.includes(el.get('info').accType) &&
-        el.get('distances')[0].distance < this.distanceInMeters
+    let featuresSelected = this.accommodationFeatures.filter(
+      (el) =>
+        this.selectedAccommodations.includes(el.get("info").accType) &&
+        el.get("distances")[0].distance < this.distanceInMeters
     );
 
     this.addLayer(COLOR.ACCOMMODATION, featuresSelected);
@@ -126,7 +129,7 @@ export class AppComponent implements OnInit, OnChanges {
     let clusters = new VectorLayer({
       source: clusterSource,
       style: function (feature) {
-        const size = feature.get('features').length;
+        const size = feature.get("features").length;
         let styleCache: any = {};
         let style = styleCache[size];
         if (!style) {
@@ -136,7 +139,7 @@ export class AppComponent implements OnInit, OnChanges {
                 ? new CircleStyle({
                     radius: size > 1 ? size * 0.05 + 10 : 5,
                     stroke: new Stroke({
-                      color: '#fff',
+                      color: "#fff",
                       width: 2,
                     }),
                     fill: new Fill({
@@ -145,13 +148,13 @@ export class AppComponent implements OnInit, OnChanges {
                   })
                 : new Icon({
                     opacity: 1,
-                    src: 'assets/pin_char.svg',
+                    src: "assets/pin_char.svg",
                     scale: 0.01,
                   }),
             text: new Text({
-              text: size > 1 ? size.toString() : '',
+              text: size > 1 ? size.toString() : "",
               fill: new Fill({
-                color: '#fff',
+                color: "#fff",
               }),
             }),
           });
@@ -169,9 +172,14 @@ export class AppComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any): void {
-    if ('language' in changes) {
+    if ("language" in changes) {
       this.translations$ = of(TRANSLATIONS[this.language]);
     }
+  }
+
+  hidePopover() {
+    this.banner.nativeElement.style.display = "none";
+    this.ebanner.nativeElement.style.display = "none";
   }
 
   ngOnInit(): void {
@@ -181,12 +189,12 @@ export class AppComponent implements OnInit, OnChanges {
           source: new OSM(),
         }),
       ],
-      target: 'map',
+      target: "map",
       view: new View({
         center: transform(
           [this.longitude, this.latitude],
-          'EPSG:4326',
-          'EPSG:3857'
+          "EPSG:4326",
+          "EPSG:3857"
         ),
         zoom: this.zoom,
         maxZoom: this.maxZoom,
@@ -206,7 +214,7 @@ export class AppComponent implements OnInit, OnChanges {
       for (let item of items) {
         let point = new Point(fromLonLat([item.longitude, item.latitude]));
         let feature = new Feature({ geometry: point });
-        feature.set('info', item);
+        feature.set("info", item);
         points.push({ point, item });
 
         features.push(feature);
@@ -223,7 +231,7 @@ export class AppComponent implements OnInit, OnChanges {
           let point = new Point(fromLonLat([item.longitude, item.latitude]));
 
           let feature = new Feature({ geometry: point });
-          feature.set('info', item);
+          feature.set("info", item);
 
           let distancesToEchargingStations = [];
 
@@ -241,7 +249,7 @@ export class AppComponent implements OnInit, OnChanges {
 
           distancesToEchargingStations.sort(compare);
 
-          feature.set('distances', distancesToEchargingStations);
+          feature.set("distances", distancesToEchargingStations);
 
           features.push(feature);
         }
@@ -254,37 +262,53 @@ export class AppComponent implements OnInit, OnChanges {
       });
     });
 
-    this.map.on('click', (e) => {
-      this.banner.nativeElement.style.display = 'none';
-      this.ebanner.nativeElement.style.display = 'none';
-      this.map.forEachFeatureAtPixel(e.pixel, (feature, layer) => {
-        if (feature.get('features').length == 1) {
-          let object = feature.get('features')[0];
+    this.map.on("click", (e) => {
 
-          if (object.get('info').type == 'Hotel') {
-            this.nearbyStations = object.get('distances').slice(0, 3);
-            this.currentAccommodation = object.get('info');
+      this.hidePopover()
+
+      this.map.forEachFeatureAtPixel(e.pixel, (feature) => {
+        let settingBarHeight =
+          document.getElementById("settings")?.clientHeight;
+        let containerHeight =
+          document.getElementById("main-container")?.clientHeight;
+
+        if (feature.get("features").length == 1) {
+          let object = feature.get("features")[0];
+
+          if (object.get("info").type == "Hotel") {
+            this.nearbyStations = object.get("distances").slice(0, 3);
+            this.currentAccommodation = object.get("info");
             if (this.currentAccommodation) {
               this.currentAccommodationDetails$ = of(
                 this.currentAccommodation[this.language]
               );
             }
 
-            this.banner.nativeElement.style.top = e.pixel[1] + 'px';
-            this.banner.nativeElement.style.left = e.pixel[0] + 'px';
-            this.banner.nativeElement.style.display = 'inherit';
+            if (settingBarHeight && containerHeight) {
+              this.banner.nativeElement.style.top =
+                settingBarHeight + 10 + "px";
+              this.banner.nativeElement.style.left = "10px";
+              this.banner.nativeElement.style.display = "inherit";
+              this.banner.nativeElement.style.height =
+                containerHeight - settingBarHeight - 50 + "px";
+            }
           } else {
             //{address: el.smetadata.address, accessType: el.smetadata.accessType, capacity: el.smetadata.capacity, city: el.smetadata.city, paymentInfo: el.smetadata.paymentInfo, reservable: el.smetadata.reservable}
             this.fetchDataService
-              .requestStationPlugs(object.get('info').scode)
+              .requestStationPlugs(object.get("info").scode)
               .subscribe((el) => {
                 console.log(el);
                 this.plugInfo = el;
-                this.currentEStation = object.get('info');
+                this.currentEStation = object.get("info");
 
-                this.ebanner.nativeElement.style.top = e.pixel[1] + 'px';
-                this.ebanner.nativeElement.style.left = e.pixel[0] + 'px';
-                this.ebanner.nativeElement.style.display = 'inherit';
+                if (settingBarHeight && containerHeight) {
+                  this.ebanner.nativeElement.style.top =
+                    settingBarHeight + 10 + "px";
+                  this.ebanner.nativeElement.style.left = "10px";
+                  this.ebanner.nativeElement.style.display = "inherit";
+                  this.ebanner.nativeElement.style.height =
+                    containerHeight - settingBarHeight - 40 + "px";
+                }
               });
           }
         } else {
@@ -300,9 +324,8 @@ export class AppComponent implements OnInit, OnChanges {
           );
         }
 
-        this.map.on('movestart', () => {
-          this.banner.nativeElement.style.display = 'none';
-          this.ebanner.nativeElement.style.display = 'none';
+        this.map.on("movestart", () => {
+          this.hidePopover()
         });
       });
     });

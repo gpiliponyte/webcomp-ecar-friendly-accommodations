@@ -12,8 +12,7 @@ export enum AccommodationNewType {
   Hotel = 'Hotel',
   BedAndBreakfast = 'BedAndBreakfast',
   Hostel = 'Hostel',
-  Campground = 'Campground',
-  NotDefined = 'Not Defined'
+  Campground = 'Campground'
 }
 
 export interface EChargingStation {

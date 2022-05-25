@@ -9,7 +9,7 @@
   display: none;
   padding: 10px;
   max-width: 400px;
-  border: 0.1px solid #808080
+  border: 0.1px solid #808080;
 }
 
 input {
@@ -67,6 +67,19 @@ input {
   padding: 3px;
   white-space: nowrap;
   text-transform: lowercase;
+}
+
+.popup-close-button {
+  background: transparent;
+  border: none;
+  float: right;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.popup-close-icon {
+  height: 15px;
+  width: 15px;
 }
 
 .echarger-tag {

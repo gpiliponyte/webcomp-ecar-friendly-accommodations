@@ -69,6 +69,7 @@
   <div id="map" class="map"></div>
 
   <div #banner class="popover">
+    <button class="popup-close-button" (click)="onPopoverClose()"> <img class="popup-close-icon" src="assets/close.svg"></button>
     <h3>{{ currentAccommodation?.name }}</h3>
     <h5>{{ (translations$ | async).Accommodation }}</h5>
     <div class="popover-tag-container">
@@ -117,6 +118,7 @@
   </div>
 
   <div #ebanner class="popover">
+    <button class="popup-close-button" (click)="onPopoverClose()"> <img class="popup-close-icon" src="assets/close.svg"></button>
     <h3>{{ currentEStation?.name }}</h3>
     <h5>{{ currentEStation?.type }}</h5>
     <div class="popover-tag-container">
