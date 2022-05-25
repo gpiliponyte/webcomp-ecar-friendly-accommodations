@@ -10,6 +10,7 @@
   padding: 10px;
   width: 300px;
   border: 0.1px solid #808080;
+  overflow-y: scroll;
 }
 
 input {
@@ -75,6 +76,9 @@ input {
   float: right;
   cursor: -webkit-grab;
   cursor: grab;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
 .popup-close-icon {
@@ -125,8 +129,8 @@ input {
 }
 
 .popover-bottom-container {
-  position: absolute;
-  bottom: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .button-container-title {
@@ -144,6 +148,12 @@ input {
 
 #station-nearby-list {
   padding-left: 30px;
+}
+
+.popover-inner {
+  display: flex; 
+  flex-direction:column; 
+  height: inherit;
 }
 
 mat-progress-spinner {

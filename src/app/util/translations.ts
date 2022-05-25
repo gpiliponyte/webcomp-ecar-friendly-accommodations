@@ -31,7 +31,7 @@ export const TRANSLATIONS = {
     Outlet: 'Ladestecker',
     Outlets: 'Ladestecker',
     PaymentInfo: 'Zahlungsinformationen',
-    MaxPower: 'Maximale Leistung',
+    MaxPower: 'Max. Leistung',
     Current: 'Strom',
     AvailablePlugs: 'Verfügbare Ladestecker'
   },

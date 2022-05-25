@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnChanges {
   @Input() latitude = 46.4983;
   @Input() distanceInMeters = 1500;
   @Input() zoom = 10;
-  @Input() minZoom = 1; //8;
+  @Input() minZoom = 8;
   @Input() maxZoom = 20;
 
   translations$: Observable<any> = of(TRANSLATIONS[this.language]);

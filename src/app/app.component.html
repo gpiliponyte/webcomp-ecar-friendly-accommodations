@@ -69,8 +69,10 @@
     <button class="popup-close-button" (click)="hidePopover()">
       <img class="popup-close-icon" src="assets/close.svg" />
     </button>
+
+    <div class="popover-inner">
     <p class="popover-name">{{ currentAccommodation?.name }}</p>
-    <!-- <p>{{ (translations$ | async).Accommodation }}</p> -->
+
     <div class="popover-tag-container centered">
       <span class="popup-tag accommodation-tag">{{
         currentAccommodation?.accType
@@ -119,14 +121,18 @@
         </li>
       </ul>
     </div>
-  </div>
+  </div></div>
 
   <div #ebanner class="popover">
+
     <button class="popup-close-button" (click)="hidePopover()">
       <img class="popup-close-icon" src="assets/close.svg" />
     </button>
+
+    <div class="popover-inner">
+    
     <p class="popover-name">{{ currentEStation?.name }}</p>
-    <!-- <h5>{{ currentEStation?.type }}</h5> -->
+ 
     <div class="popover-tag-container centered">
       <span class="popup-tag echarger-tag">{{
         currentEStation?.accessType
@@ -162,7 +168,7 @@
       {{ currentEStation?.city }}
     </div>
 
-    <div class="popover-bottom-container" *ngIf="plugInfo">
+    <div style = "margin-top: auto;" class="popover-bottom-container" *ngIf="plugInfo">
       <p class="button-container-title centered">{{ (translations$ | async).AvailablePlugs }} ({{plugInfo.length}})</p>
       <div *ngFor="let plug of plugInfo">
         <div class="station-nearby">
@@ -175,5 +181,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div></div>
 </div>
