@@ -102,7 +102,7 @@ git clone https://github.com/gpiliponyte/webcomp-ecar-friendly-accommodations.gi
 Change directory:
 
 ```bash
-cd ECarFriendlyAccommodation/
+cd webcomp-ecar-friendly-accommodations/
 ```
 
 ### Dependencies
