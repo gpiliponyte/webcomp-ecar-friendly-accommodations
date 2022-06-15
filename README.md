@@ -5,21 +5,14 @@
 [![CI/CD](https://github.com/noi-techpark/webcomp-boilerplate/actions/workflows/main.yml/badge.svg)](https://github.com/noi-techpark/webcomp-boilerplate/actions/workflows/main.yml)
 
 
-_What is the problem domain?_
 
 E-vehicles are becoming increasingly popular, however, e-charging stations are not that widely available yet. Tourists that come to South Tyrol with their e-vehicles also face this problem, especially if their selected accommodation is not near a charging station.
 
-_What does the web component provide?_
-
 This web component tries to mitigate this issue by allowing the user to find accommodations in South Tyrol that are within a spefic distance to a charging station. 
-
-_Which data of the Open Data Hub will be shown?_
 
 The web component uses the Open Data Hub's Accommodation and E-Mobility datasets.
 
-_Why is it soo cool?_
-
-The web component is visually pleasing, easy to use, brings value to the user, allows for greener tourism, allows for dynamic accommodation type, distance from echarging station and language selection. The web component comes in 3 languages (English, Italian, German) (MAYBE). The data is fetched by using the SPARQL endpoint. 
+The web component is visually pleasing, easy to use, brings value to the user, allows for greener tourism, allows for dynamic accommodation type, distance from echarging station and language selection. The web component comes in 3 languages (English, Italian, German).
 
 ## Table of contents
 
