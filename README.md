@@ -25,7 +25,9 @@ The web component is visually pleasing, easy to use, brings value to the user, a
 
 ## Usage
 
-Include the webcompscript file `dist/accommodation.min.js` in your HTML and define the web component like this:
+1) Include the webcompscript file `dist/webcomp-ecar-friendly-accommodations.min.js` and the styles file `dist/styles.css` in your HTML 
+2) make sure the /assets directory is in the same directory as the HTML
+3) define the web component like this:
 
 ```html
 <hotel-picker language="en"></hotel-picker>
@@ -94,7 +96,7 @@ For a ready to use Docker environment with all prerequisites already installed a
 Get a copy of the repository:
 
 ```bash
-git clone https://github.com/gpiliponyte/ECarFriendlyAccommodation.git
+git clone https://github.com/gpiliponyte/webcomp-ecar-friendly-accommodations.git
 ```
 
 Change directory:
