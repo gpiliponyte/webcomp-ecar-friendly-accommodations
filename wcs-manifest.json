@@ -3,7 +3,7 @@
     "description": "ECar-Friendly Accommodation Finder to get accommodations within a specific distance from a charging station",
     "descriptionAbstract": "Widget to display Open Data Hub Mobility and Accommodation Information",
     "license": "AGPL-3.0-or-later",
-    "repositoryUrl": "https://github.com/gpiliponyte/ECarFriendlyAccommodation.git",
+    "repositoryUrl": "https://github.com/gpiliponyte/webcomp-ecar-friendly-accommodations.git",
     "copyrightHolders": [
       {
         "name": "NOI",
@@ -20,12 +20,12 @@
         "organizationUrl": "https://www.unibz.it/"
       }
     ],
-    "image": null,
+    "image": "wcs-logo.png",
     "searchTags": [],
     "dist": {
       "basePath": "dist",
       "files": [
-        "accommodation.min.js"
+        "webcomp-ecar-friendly-accommodations.min.js"
       ]
     },
     "configuration": {

@@ -6,7 +6,6 @@
   ></mat-progress-spinner>
 
   <div id="settings">
-
     <div class="settings-spacing-auto">
       <mat-form-field id="language-field" appearance="legacy">
         <mat-label><img [src]="selected.img" class="icon" /></mat-label>
@@ -115,13 +114,21 @@
             class="station-nearby-item"
             *ngFor="let station of nearbyStations"
           >
-            <span style="font-weight: 400;"
-              >{{ station.station.item.name }} </span>
+            <span class="station-nearby-name"
+              >{{ station.station.item.name }}
+            </span>
 
-                (<span class="italic">{{ station.distance | distance }}
-                {{ (translations$ | async).Away }}</span>,
-                <div class="station_coordinates"><img class="icon" src="assets/pin.svg"> ({{ station.station.item.longitude }}; {{ station.station.item.latitude }})</div> )
-        </li>
+            (<span class="italic"
+              >{{ station.distance | distance }}
+              {{ (translations$ | async).Away }}</span
+            >,
+            <div class="station_coordinates">
+              <img class="icon" src="assets/pin.svg" /> ({{
+                station.station.item.longitude
+              }}; {{ station.station.item.latitude }})
+            </div>
+            )
+          </li>
         </ul>
       </div>
     </div>
@@ -136,22 +143,24 @@
       <p class="popover-name">{{ currentEStation?.name }}</p>
 
       <div class="popover-tag-container centered">
-        <div class="popup-tag echarger-tag">{{
-          currentEStation?.accessType
-        }}</div>
-        <div class="popup-tag echarger-tag">{{
-          currentEStation?.reservable
-            ? (translations$ | async).Reservable
-            : (translations$ | async).NotReservable
-        }}</div>
-        <div class="popup-tag echarger-tag"
-          >{{ currentEStation?.capacity }}
+        <div class="popup-tag echarger-tag">
+          {{ currentEStation?.accessType }}
+        </div>
+        <div class="popup-tag echarger-tag">
+          {{
+            currentEStation?.reservable
+              ? (translations$ | async).Reservable
+              : (translations$ | async).NotReservable
+          }}
+        </div>
+        <div class="popup-tag echarger-tag">
+          {{ currentEStation?.capacity }}
           {{
             currentEStation?.capacity == "1"
               ? (translations$ | async).Outlet
               : (translations$ | async).Outlets
-          }}</div
-        >
+          }}
+        </div>
       </div>
       <div class="centered">
         <img src="assets/cash.svg" class="icon" /><a
