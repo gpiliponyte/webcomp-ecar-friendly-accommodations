@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration element --output-hashing none && node build.js",
+    "build": "ng build --configuration element  --single-bundle true --output-hashing none && node build.js",
     "watch": "ng build --watch --configuration development"
   },
   "private": true,
@@ -26,6 +26,7 @@
     "leaflet": "^1.7.1",
     "mdb-angular-ui-kit": "^2.1.0",
     "mdb-ui-kit": "^4.0.0",
+    "ngx-build-plus": "^13.0.1",
     "ol": "^6.14.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
