@@ -12,7 +12,7 @@ This web component tries to mitigate this issue by allowing the user to find acc
 
 The web component uses the Open Data Hub's Accommodation and E-Mobility datasets.
 
-The web component is visually pleasing, easy to use, brings value to the user, allows for greener tourism, allows for dynamic accommodation type, distance from echarging station and language selection. The web component comes in 3 languages (English, Italian, German).
+The web component is visually pleasing, easy to use, brings value to the user, allows for greener tourism, allows for dynamic accommodation type, distance from e-charging station and language selection. The web component comes in 3 languages (English, Italian, German).
 
 ## Table of contents
 
