@@ -6,7 +6,7 @@
 
 
 
-E-vehicles are becoming increasingly popular, however, e-charging stations are not that widely available yet. Tourists who come to South Tyrol with their e-vehicles also face this problem, especially if their selected accommodation is not near a charging station.
+E-vehicles are becoming increasingly popular, however, e-charging stations are not that widely available yet. Tourists coming to South Tyrol with their e-vehicles also face this problem, especially if their selected accommodation is not near a charging station.
 
 This web component tries to mitigate this issue by allowing the user to find accommodations in South Tyrol that are within a spefic distance to a charging station. 
 
